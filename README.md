@@ -3,8 +3,11 @@
 </p>
 
 <H1 align="center">
-PROJECT 1-LIBFT 42
+PROJECT 9-MINISHELL
 </H1>
+
+L’objectif de ce projet est de créer un shell minimaliste. 
+
 
 ## Table of Contents
 1. [General Info](#general-info)
