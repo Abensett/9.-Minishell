@@ -10,30 +10,18 @@ L’objectif de ce projet est de créer un shell minimaliste.
 
 
 ## Table of Contents
-1. [General Info](#general-info)
-2. [Functions](#Functions)
-3. [Bonus Functions (listes chaînées)](#Bonus-Functions)
+1.
+2. 
+3. 
 
 
 ### General Info
 ***
-This is a library of useful functions that I will supply during all the process of learning coding in C.
 
 ## Functions
 
-| Name             |    Action|
-| :--------------- |:---------------:|
-| Aligné à gauche  |     |
-| Aligné à gauche  | |
-| Aligné à gauche  | |
-
-## Bonus Functions
-***
-
 
 
 ***
-
-## 42 Project 115/100
 
 
