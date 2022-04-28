@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:24:25 by abou              #+#    #+#             */
-/*   Updated: 2022/04/28 05:19:35 by abensett         ###   ########.fr       */
+/*   Updated: 2022/04/28 05:39:45 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ typedef struct s_simple_command
 	char	**av;
 }			t_simple_command;
 
+/* Environment variable structure key = name of the variable */
+
 typedef struct s_env_list
 {
 	char				*key;
@@ -46,7 +48,7 @@ typedef struct s_env_list
 	struct s_env_list	*next;
 }	t_env_list;
 
-/* Structure d'exectution */
+/* Exectution  structure */
 typedef struct s_exec
 {
 	pid_t	pid;
