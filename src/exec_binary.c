@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_binary.c                                   :+:      :+:    :+:   */
+/*   exec_binary.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 00:52:39 by abensett          #+#    #+#             */
-/*   Updated: 2022/04/28 05:19:15 by abensett         ###   ########.fr       */
+/*   Updated: 2022/04/28 05:25:30 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*create the path we need to exec our binary file with execve(PATHS,CMD,ENVP)*/
 char	**create_paths(char *cmd, char **envp)
 {
 	int		i;
