@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:24:25 by abou              #+#    #+#             */
-/*   Updated: 2022/04/28 00:47:11 by abensett         ###   ########.fr       */
+/*   Updated: 2022/04/28 05:19:35 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char		**set_envp(t_env_list *env);
 void		set_env(t_minishell *shell, char *str);
 void		unset_env(t_minishell *shell, char *key);
 
-/* The execute_binary.c*/
+/* The exec_binary.c*/
 int			exec_binary(int num, t_minishell *shell);
 
 /* The builtins.c */

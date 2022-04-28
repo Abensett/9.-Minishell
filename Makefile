@@ -26,18 +26,25 @@ DIROBJ			= objs/
 
 CC				= gcc
 
-CFLAGS 			= 
+CFLAGS 			= -Wall -Wextra -Werror -g
 
-INCLUDES 		= -I /includes -I /opt/homebrew/opt/readline/include 
+INCLUDES 		= -I ./includes -I /opt/homebrew/opt/readline/include 
 
-LDFLAGS			= -L/opt/homebrew/opt/readline/lib -lreadline libft/libft.a
+LDFLAGS			= -L/opt/homebrew/opt/readline/lib -lreadline libft/libft.a 
 
 
 # **************************************************************************** #
 #                                SOURCE FILES                                  #
 # **************************************************************************** #
 
-SRC_FILES = minishell.c
+SRC_FILES = built-ins.c \
+			built-ins_2.c \
+			exec_binary.c \
+			executor.c \
+			ft_env.c \
+			ft_env_2.c \
+			minishell.c
+
 
 OBJ := $(SRC_FILES:.c=.o)
 
@@ -53,13 +60,13 @@ DIROBJS	= $(addprefix $(DIROBJ), $(OBJ))
 all: header	$(NAME)
 
 $(DIROBJ)%.o:$(DIRSRC)%.c
-			mkdir -p $(DIROBJ)
+			@mkdir -p $(DIROBJ)
 			$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(NAME):	$(DIROBJS)
 			@make  --no-print-directory -C libft
 			@printf "\033[2K\r $(_YELLOW)Compiling $< $(_END)⌛"
-			@$(CC) $(CFLAGS) $(DIROBJS) $(INCLUDES)  $(LDFLAGS) -o $@
+			$(CC) $(CFLAGS) $(DIROBJS) $(INCLUDES)  $(LDFLAGS) -o $@
 			@printf "\n[$(GREEN)OK$(WHITE)] $(NAME) generated 🐚\n"
 
 

@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 14:43:26 by abensett          #+#    #+#             */
-/*   Updated: 2021/11/12 17:31:43 by abensett         ###   ########.fr       */
+/*   Updated: 2022/04/28 05:08:56 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ size_t	ft_strlen(const char *s)
 	size_t	i;
 
 	i = 0;
-	while (*(s++))
+	while (s && *s++)
 		i++;
 	return (i);
 }
