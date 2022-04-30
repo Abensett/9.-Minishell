@@ -8,8 +8,7 @@ PROJECT 9-MINISHELL
 
 L’objectif de ce projet est de créer un shell minimaliste. 
 
-The goal of this new project is to create a simple shell (just like a small bash or zsh), which will help
-you apprehended processes and file descriptors.
+
 
 ## Table of Contents
 1.
