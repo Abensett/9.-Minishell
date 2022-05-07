@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:06:29 by abensett          #+#    #+#             */
-/*   Updated: 2022/04/28 05:37:47 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/07 13:19:44 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ void	execution(int i, t_minishell *shell)
 	else if (ft_strlen(cmd) == ft_strlen("env") \
 		&& !ft_strncmp(cmd, "env", ft_strlen("env")))
 		env(shell);
+	else if (ft_strlen(cmd) == ft_strlen("exit") \
+		&& !ft_strncmp(cmd, "exit", ft_strlen("exit")))
+		ft_exit(0, shell);
 	else
 		exec_binary(i, shell);
 }
@@ -48,7 +51,7 @@ void	executor(t_minishell *shell)
 	t_exec		exec;
 
 	i = -1;
-	while (shell->number_cmd > ++i)
+	while (shell->number_cmd >= ++i)
 	{
 		exec.pid = fork();
 		if (exec.pid == -1)

@@ -17,7 +17,8 @@ void	ft_signals(int sig)
 	if (sig == SIGINT)
 	   ft_putchar_fd('\n', 1);
   rl_replace_line("", 0);
-	rl_on_new_line();
+  rl_on_new_line();
+
 	rl_redisplay();
 }
 
@@ -35,7 +36,7 @@ int main(int ac, char **av, char **envp)
   t_minishell   shell;
   char          *line;
   char          *pwd;
-  // t_list        *tocken_list;
+  t_list        *token_list;
 
   shell.env = init_env(envp);
   shell.envp = set_envp(shell.env);
@@ -56,27 +57,29 @@ int main(int ac, char **av, char **envp)
 		    	continue ;
 		  }
       add_history(line);
+      space_handler(&line);
+      token_list=lexer(&shell.env,line);
+      parser(&token_list, &shell);
       // printf("OHH \n" );
-      shell.cmds = malloc(sizeof(t_simple_command) * 1);
+      // shell.cmds = malloc(sizeof(t_simple_command) * 1);
 
-      char *tmp;
-      char *line1;
-      char *line2;
-	    tmp = ft_strchr(line, ' ');
-      if(ft_strlen(tmp))
+      // char *tmp;
+      // char *line1;
+      // char *line2;
+	    // tmp = ft_strchr(line, ' ');
+      // if(ft_strlen(tmp))
         
-      line2 = ft_strdup(tmp + 1);
-      line1 = ft_substr(line, 0, ft_strlen(line) - ft_strlen(tmp));
+      // line2 = ft_strdup(tmp + 1);
+      // line1 = ft_substr(line, 0, ft_strlen(line) - ft_strlen(tmp));
 
-      shell.cmds[0].av = malloc(sizeof(char *)*3);
+      // shell.cmds[0].av = malloc(sizeof(char *)*3);
+      // // printf("OHH \n" );
+
+      // shell.cmds[0].av[0] = ft_strdup(line1);
+      // shell.cmds[0].av[1] = ft_strdup(line2);
+      // shell.number_cmd = 1;
       // printf("OHH \n" );
-
-      shell.cmds[0].av[0] = ft_strdup(line1);
-      shell.cmds[0].av[1] = ft_strdup(line2);
-      shell.number_cmd = 1;
-      // printf("OHH \n" );
-
-      // printf("%s \n",shell.cmds[0].av[0] );
+      // printf("OHH %d \n", shell.number_cmd);
 
       executor(&shell);
       free(line);

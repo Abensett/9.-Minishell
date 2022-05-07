@@ -6,12 +6,15 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:21:02 by abensett          #+#    #+#             */
-/*   Updated: 2022/04/28 05:33:47 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/01 06:27:38 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* writes  separated by single blank (' ') characters
+with (`\n'), to the standard output. 
+option -n => no newline */
 void	echo(int i, t_minishell *shell)
 {
 	const char	*tmp = shell->cmds[i].av[1];
@@ -41,6 +44,7 @@ void	cd(int i, t_minishell *shell)
 	(void)shell;
 }
 
+/* Returns the name of the current working directory. */
 /* buff = the Working directory et size = the size */
 void	pwd(void)
 {
@@ -54,18 +58,26 @@ void	pwd(void)
 	ft_putendl_fd(pwd, 1);
 	free(pwd);
 }
-/* unset the variable before setting the new value */
 
+/*
+set (no arg) : display all variables of the environment
+set arg=2 :unset the variable before setting the new value */
 void	export(int i, t_minishell *shell)
 {
 	char	*tmp;
 
+	if (!shell->cmds[i].av[1])
+	{
+		env(shell);
+		return ;
+	}
 	tmp = ft_strchr(shell->cmds[i].av[1], '=');
 	unset_env(shell, ft_substr(shell->cmds[i].av[1], 0, \
 		ft_strlen(shell->cmds[i].av[1]) - ft_strlen(tmp)));
 	set_env(shell, shell->cmds[i].av[1]);
-}	
+}
 
+/* unset the variable */
 void	unset(int i, t_minishell *shell)
 {
 	unset_env(shell, shell->cmds[i].av[1]);
