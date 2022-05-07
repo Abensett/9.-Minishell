@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:24:25 by abou              #+#    #+#             */
-/*   Updated: 2022/05/07 13:40:59 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/07 15:30:37 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@
 # include <fcntl.h>
 # include <signal.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 
-// /*LISTE CHAINEES BLOCK = FUNCTIONS+OPTION+ARG  PAS UTILISE POUR L'INSTANT*/ 
+// /*LISTE CHAINEES BLOCK = FUNCTIONS+OPTION+ARG  PAS UTILISE POUR L'INSTANT*/
 
 // typedef struct s_all_commands
 // {
