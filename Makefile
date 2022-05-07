@@ -28,9 +28,9 @@ CC				= gcc
 
 CFLAGS 			= -Wall -Wextra -Werror -g
 
-INCLUDES 		= -I ./includes -I /opt/homebrew/opt/readline/include 
+INCLUDES 		= -I ./includes -I /opt/homebrew/opt/readline/include
 
-LDFLAGS			= -L/opt/homebrew/opt/readline/lib -lreadline libft/libft.a 
+LDFLAGS			= -L/opt/homebrew/opt/readline/lib -lreadline libft/libft.a
 
 
 # **************************************************************************** #
@@ -43,7 +43,13 @@ SRC_FILES = built-ins.c \
 			executor.c \
 			ft_env.c \
 			ft_env_2.c \
-			minishell.c
+			minishell.c \
+			arglist.c \
+			expansion.c \
+			parsing.c \
+			parsing_utils.c \
+			quotes_handling.c \
+			space_handling.c
 
 
 OBJ := $(SRC_FILES:.c=.o)
@@ -64,6 +70,7 @@ $(DIROBJ)%.o:$(DIRSRC)%.c
 			$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(NAME):	$(DIROBJS)
+			@make  bonus --no-print-directory -C libft
 			@make  --no-print-directory -C libft
 			@printf "\033[2K\r $(_YELLOW)Compiling $< $(_END)⌛"
 			$(CC) $(CFLAGS) $(DIROBJS) $(INCLUDES)  $(LDFLAGS) -o $@

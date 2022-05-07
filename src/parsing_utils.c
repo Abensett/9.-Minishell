@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 08:18:39 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/07 13:29:42 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/07 15:26:43 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,20 @@ t_simple_command	*fill_cmds(t_list *token_list, t_simple_command *cmds, t_minish
 
 	i = 0;
 	j = 0;
-	while (t && ft_strncmp(t->content, ">", 1) != 0)
+	while (token_list && ft_strncmp(token_list->content, ">", 1) != 0)
 	{
-		if (ft_strncmp(t->content, "|", ft_strlen(t->content)) == 0)
+		if (ft_strncmp(token_list->content, "|", ft_strlen(token_list->content)) == 0)
 		{
 			i++;
 			cmds[i].av = malloc(sizeof(char *)
-					* (args_counter(t->next) + 1));
+					* (args_counter(token_list->next) + 1));
 			j = 0;
-			token_list = t->next;
+			token_list = token_list->next;
 		}
-		cmds[i].av[j] = ft_strdup(t->content);
+		cmds[i].av[j] = ft_strdup(token_list->content);
 		cmds[i].nb_args = ++j;
 		cmds[i].av[j] = 0;
-		token_list = t->next;
+		token_list = token_list->next;
 	}
 	shell->number_cmd = i;
 	return (cmds);
