@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:24:25 by abou              #+#    #+#             */
-/*   Updated: 2022/05/07 13:17:12 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/07 13:40:59 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,13 @@ typedef struct s_minishell
 	t_env_list			*env;
 }						t_minishell;
 /*The space handling*/
-void	space_handler(char **line);
+void				space_handler(char **line);
 
 /*The quotes handling*/
-void		quote_remove(t_env_list **env, char **line);
+void				quote_remove(t_env_list **env, char **line);
 
 /*The expansion*/
-void		expansion(t_env_list **env, char **line, int *i);
+void				expansion(t_env_list **env, char **line, int *i);
 
 /*The arglist aka lexer.c*/
 t_list				*lexer(t_env_list **env, char *line);
