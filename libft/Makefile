@@ -41,6 +41,8 @@ SRC = src/ft_abs.c \
 	src/ft_putnbr_fd.c \
 	src/ft_putstr_fd.c \
 	src/ft_split.c \
+	src/ft_str_add.c \
+	src/ft_str_delete.c \
 	src/ft_strjoin.c \
 	src/ft_strtrim.c \
 	src/ft_strmapi.c \
@@ -97,7 +99,7 @@ bonus:		$(OBJSBONUS)
 			@printf "\n[$(GREEN)OK$(WHITE)] $(NAME)📙🅱  generated \n"
 .c.o:
 			@printf "\033[2K\r $(_YELLOW)Compiling $< $(_END)⌛"
-			@gcc -Wall -Wextra -Werror -c $< -o $(<:.c=.o)
+			@gcc -Wall -Wextra -Werror -I ./ -c $< -o $(<:.c=.o)
 			@printf "\n[$(GREEN)OK$(WHITE)] $(<) generated \n"
 clean:
 			@rm -rf $(OBJS)	$(OBJSBONUS)
@@ -107,6 +109,6 @@ fclean:		clean
 			@rm -rf $(NAME)
 			@printf "\n[$(GREEN)cleaned$(WHITE)] $(NAME) \n"
 
-re:			src/fclean all
+re:			fclean all
 
-.PHONY: all clean src/fclean re
+.PHONY: all clean fclean re

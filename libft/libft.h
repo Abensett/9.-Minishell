@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/07 15:05:19 by abensett          #+#    #+#             */
-/*   Updated: 2022/01/05 18:10:11 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/08 10:49:39 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,12 @@ void		ft_putnbr_fd(int n, int fd);
 void		ft_putstr_fd(char *s, int fd);
 char		*ft_strjoin(char const *s1, char const *s2);
 char		**ft_split(char const *s, char c);
+/* add str2 to str begin from start index */
+void		ft_str_add(char **str, int start, char *str2);
+/* delete len char from str begin from start index */
+void		ft_str_delete(char **str, int start, int len);
 char		*ft_strmapi(char const *s, char (*f)(unsigned int, char));
+/*sous chaîne s = source / start = start of new str in s / len  max  s */
 char		*ft_substr(char const *s, unsigned int start, size_t len);
 char		*ft_strtrim(char const *s1, char const *set);
 
