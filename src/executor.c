@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:06:29 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/09 10:22:40 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/09 12:31:28 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,26 @@ void	execution(int i, t_minishell *shell)
 {
 	const char	*cmd = shell->cmds[i].av[0];
 
-	if (ft_strlen(cmd) == ft_strlen("echo") \
-		&& !ft_strncmp(cmd, "echo", ft_strlen("echo")))
-	{
-		echo(i, shell);
-	}
-	else if (ft_strlen(cmd) == ft_strlen("cd") \
-		&& !ft_strncmp(cmd, "cd", ft_strlen("cd")))
+	if (ft_strlen(cmd) == 4 \
+		&& !ft_strncmp(cmd, "echo", 4))
+		exec_binary(i, shell);
+	else if (ft_strlen(cmd) == 2 \
+		&& !ft_strncmp(cmd, "cd", 2))
 		cd(i, shell);
-	else if (ft_strlen(cmd) == ft_strlen("pwd") \
-		&& !ft_strncmp(cmd, "pwd", ft_strlen("pwd")))
+	else if (ft_strlen(cmd) == 3 \
+		&& !ft_strncmp(cmd, "pwd", 3))
 		pwd();
-	else if (ft_strlen(cmd) == ft_strlen("export") \
-		&& !ft_strncmp(cmd, "export", ft_strlen("export")))
+	else if (ft_strlen(cmd) == 6\
+		&& !ft_strncmp(cmd, "export", 6))
 		export(i, shell);
-	else if (ft_strlen(cmd) == ft_strlen("unset") \
-		&& !ft_strncmp(cmd, "unset", ft_strlen("unset")))
+	else if (ft_strlen(cmd) == 5 \
+		&& !ft_strncmp(cmd, "unset", 5))
 		unset(i, shell);
-	else if (ft_strlen(cmd) == ft_strlen("env") \
-		&& !ft_strncmp(cmd, "env", ft_strlen("env")))
+	else if (ft_strlen(cmd) == 3 \
+		&& !ft_strncmp(cmd, "env", 3))
 		env(shell);
-	else if (ft_strlen(cmd) == ft_strlen("exit") \
-		&& !ft_strncmp(cmd, "exit", ft_strlen("exit")))
+	else if (ft_strlen(cmd) == 4 \
+		&& !ft_strncmp(cmd, "exit", 4))
 		ft_exit(0, shell);
 	else
 		exec_binary(i, shell);
@@ -53,7 +51,7 @@ void	reinit_fd(t_exec *exec)
 	waitpid(exec->pid, &exec->tmpret, 0);
 }
 
-int	make_fd(t_minishell *shell, t_exec *exec)
+int		make_fd(t_minishell *shell, t_exec *exec)
 {
 	int	fdin;
 
@@ -61,14 +59,14 @@ int	make_fd(t_minishell *shell, t_exec *exec)
 	exec->tmpout = dup(1);
 	if (shell->inf)
 		fdin = open(shell->inf, O_RDONLY);
-	// else if (shell->heredoc != 0)
-	// 	fdin = heredoc(shell);
+	else if (shell->heredoc != 0)
+		fdin = heredoc(shell);
 	else
 		fdin = dup(exec->tmpin);
 	return (fdin);
 }
 
-int	get_out_file(int tmpout, t_minishell *shell)
+int		get_out_file(int tmpout, t_minishell *shell)
 {
 	int	fdout;
 
@@ -85,9 +83,9 @@ int	get_out_file(int tmpout, t_minishell *shell)
 		fdout = dup(tmpout);
 	return (fdout);
 }
-/* create a new process for each command, the parent process waits 
-for the child to exec the command */
 
+/* creates a new process for each command, the parent process waits 
+for the child to exec the command */
 void	executor(t_minishell *shell)
 {
 	int			i;

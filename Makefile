@@ -49,7 +49,9 @@ SRC_FILES = built-ins.c \
 			parsing.c \
 			parsing_utils.c \
 			quotes_handling.c \
-			space_handling.c
+			space_handling.c \
+			valid.c \
+			heredoc.c
 
 
 OBJ := $(SRC_FILES:.c=.o)

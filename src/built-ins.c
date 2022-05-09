@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:21:02 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/09 10:16:46 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/09 12:29:30 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,50 @@
 /* writes  separated by single blank (' ') characters
 with (`\n'), to the standard output. 
 option -n => no newline */
+
 void	echo(int i, t_minishell *shell)
 {
-	const char	*tmp = shell->cmds[i].av[1];
 	int			j;
-	int			option_n;
+	int			should_nl;
+	const char	*tmp = shell->cmds[i].av[1];
 
 	j = 1;
-	option_n = 1;
+	should_nl = 1;
 	if (ft_strlen(tmp) == ft_strlen("-n") \
 		&& !ft_strncmp(tmp, "-n", ft_strlen("-n")) && ++j)
-		option_n = 0;
-	while (ft_strlen(shell->cmds[i].av[j]) == 2\
-		&& !ft_strncmp(shell->cmds[i].av[j],"-n",2))
-		j++; 
+		should_nl = 0;
 	while (shell->cmds[i].av[j])
 	{
 		ft_putstr_fd(shell->cmds[i].av[j++], 1);
 		if (shell->cmds[i].av[j])
 			ft_putchar_fd(' ', 1);
 	}
-	if (option_n)
+	if (should_nl)
 		ft_putchar_fd('\n', 1);
-	(void)i;
-	(void)shell;
 }
+// void		echo(int i, t_minishell *shell)
+// {
+// 	const char	*tmp = shell->cmds[i].av[1];
+// 	int			j;
+// 	int			option_n;
+
+// 	j = 1;
+// 	option_n = 1;
+// 	if (ft_strlen(tmp) == 2 \
+// 		&& !ft_strncmp(tmp, "-n", 2) && ++j)
+// 		option_n = 0;
+// 	// while (ft_strlen(shell->cmds[i].av[j]) == 2\
+// 	// 	&& !ft_strncmp(shell->cmds[i].av[j],"-n",2))
+// 	// 	j++; 
+// 	while (shell->cmds[i].av[j])
+// 	{
+// 		ft_putstr_fd(shell->cmds[i].av[j++], 1);
+// 		if (shell->cmds[i].av[j])
+// 			ft_putchar_fd(' ', 1);
+// 	}
+// 	if (option_n)
+// 		ft_putchar_fd('\n', 1);
+// }
 
 void	cd(int i, t_minishell *shell)
 {

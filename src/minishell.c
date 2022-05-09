@@ -18,19 +18,38 @@ void	ft_signals(int sig)
 	   ft_putchar_fd('\n', 1);
   rl_replace_line("", 0);
   rl_on_new_line();
-
 	rl_redisplay();
 }
 
+void	free_minishell(t_minishell *shell)
+{
+	int		i;
+	int		j;
+
+	if (shell->outf)
+		free(shell->outf);
+	if (shell->inf)
+		free(shell->inf);
+	if (shell->heredoc)
+		free(shell->heredoc);
+	i = 0;
+	while (shell->cmds[i].av)
+	{
+		j = 0;
+		while (shell->cmds[i].av && shell->cmds[i].av[j])
+			free(shell->cmds[i].av[j++]);
+		i++;
+	}
+}
 void   ft_prompt(t_minishell *shell)
 {
 	char  *pwd;
 
 	pwd = getcwd(NULL, 0);
 	shell->prompt = ft_strjoin(pwd, ":~$ ");
+  shell->heredoc = 0;
 	shell->inf = 0;
 	shell->outf = 0;
-	shell->heredoc = 0;
 }
 
 int main(int ac, char **av, char **envp)
@@ -60,35 +79,19 @@ int main(int ac, char **av, char **envp)
       add_history(line);
       space_handler(&line);
       token_list=lexer(&shell.env,line);
+      if (!is_valid(token_list)) 
+		    	continue ;
       parser(&token_list, &shell);
-      // printf("OHH \n" );
-      // shell.cmds = malloc(sizeof(t_simple_command) * 1);
-
-      // char *tmp;
-      // char *line1;
-      // char *line2;
-	    // tmp = ft_strchr(line, ' ');
-      // if(ft_strlen(tmp))
-        
-      // line2 = ft_strdup(tmp + 1);
-      // line1 = ft_substr(line, 0, ft_strlen(line) - ft_strlen(tmp));
-
-      // shell.cmds[0].av = malloc(sizeof(char *)*3);
-      // // printf("OHH \n" );
-
-      // shell.cmds[0].av[0] = ft_strdup(line1);
-      // shell.cmds[0].av[1] = ft_strdup(line2);
-      // shell.number_cmd = 1;
-      // printf("OHH \n" );
-      // printf("OHH %d \n", shell.number_cmd);
-
       executor(&shell);
       free(line);
+      ft_lstclear(&token_list, free);
+      free(shell.prompt);
   }
   rl_clear_history();  
   (void)ac;
   (void)av;
   (void)env;
+  free_minishell(&shell);
   free(shell.envp);
   return (0);
 }

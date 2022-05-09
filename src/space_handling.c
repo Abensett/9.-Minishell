@@ -6,14 +6,14 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 08:18:39 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/07 12:26:43 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/09 11:06:36 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*return 1 when c is pipe or redirection else return 0*/
-static int	is_redirection_or_pipe(char c)
+int	is_redirection_or_pipe(char c)
 {
     if (c == '<' || c == '>' || c == '|')
 	    return (1);
@@ -32,7 +32,10 @@ static void	handle_before(char **line)
 	{
 		type_quote(&quote, (*line)[i]);
 		if ((!quote && i > 0 && (is_redirection_or_pipe((*line)[i]) \
-				&& (*line)[i - 1] != (*line)[i] && (*line)[i - 1] != ' ')))
+				&& (*line)[i - 1] != (*line)[i] && (*line)[i - 1] != ' '))
+				|| (quote != '\'' && (*line)[i] == '$' \
+				&& (*line)[i - 1] != ' ' && (*line)[i - 1] != '"' \
+				&& (*line)[i - 1] != '\'' && ft_isalpha((*line)[i + 1])))
 			ft_str_add(line, i++, " ");
 	}
 }
