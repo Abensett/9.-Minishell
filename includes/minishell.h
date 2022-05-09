@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:24:25 by abou              #+#    #+#             */
-/*   Updated: 2022/05/07 15:30:37 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/09 09:54:30 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,16 @@ typedef struct s_minishell
 	int					number_cmd;
 	char				**envp;
 	char				**paths;
+	char				*inf;
+	char				*outf;
+	char				*heredoc;
+	int					append;
 	t_simple_command	*cmds;
 	t_env_list			*env;
 }						t_minishell;
+
+
+//////////////////////////  LEXER  //////////////////////////////////
 /*The space handling*/
 void				space_handler(char **line);
 
@@ -86,6 +93,8 @@ void				expansion(t_env_list **env, char **line, int *i);
 t_list				*lexer(t_env_list **env, char *line);
 void				type_quote(char *quote, char c);
 
+//////////////////////////  PARSING  ////////////////////////////////
+
 /*The parsing utils*/
 void				parser(t_list **token_list, t_minishell *shell);
 
@@ -94,9 +103,18 @@ int					cmd_counter(char *str, t_list *token_lst);
 int					args_counter(t_list *token_list);
 t_simple_command	*fill_cmds(t_list *t, t_simple_command *cmds, t_minishell *shell);
 
+//////////////////////////  EXECUTION  ////////////////////////////////
+
 /* The executor.c*/
 void		execution(int i, t_minishell *shell);
 void		executor(t_minishell *shell);
+
+/*The heredoc.*/
+int		heredoc(t_minishell *shell);
+
+
+//////////////////////////  SUBSYSTEM  ////////////////////////////////
+
 
 /* The ft_envs.c*/
 t_env_list	*env_new(char *str);

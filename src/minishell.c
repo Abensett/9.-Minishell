@@ -22,20 +22,21 @@ void	ft_signals(int sig)
 	rl_redisplay();
 }
 
-char  *ft_prompt(void)
+void   ft_prompt(t_minishell *shell)
 {
-  char  *pwd;
+	char  *pwd;
 
 	pwd = getcwd(NULL, 0);
-  pwd = ft_strjoin(pwd, ":~$ ");
-  return (pwd);
+	shell->prompt = ft_strjoin(pwd, ":~$ ");
+	shell->inf = 0;
+	shell->outf = 0;
+	shell->heredoc = 0;
 }
 
 int main(int ac, char **av, char **envp)
 {
   t_minishell   shell;
   char          *line;
-  char          *pwd;
   t_list        *token_list;
 
   shell.env = init_env(envp);
@@ -45,8 +46,8 @@ int main(int ac, char **av, char **envp)
 
   while(1)
   {
-      pwd = ft_prompt();
-      line = readline(pwd);
+      ft_prompt(&shell);
+      line = readline(shell.prompt);
       if ((!ft_strncmp("exit", line, 4) && ft_strlen(line) == 4) || !line)
         break;
       if (!ft_strlen(line))
@@ -88,5 +89,6 @@ int main(int ac, char **av, char **envp)
   (void)ac;
   (void)av;
   (void)env;
+  free(shell.envp);
   return (0);
 }

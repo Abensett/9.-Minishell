@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:21:02 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/01 06:27:38 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/09 10:16:46 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ void	echo(int i, t_minishell *shell)
 	if (ft_strlen(tmp) == ft_strlen("-n") \
 		&& !ft_strncmp(tmp, "-n", ft_strlen("-n")) && ++j)
 		option_n = 0;
+	while (ft_strlen(shell->cmds[i].av[j]) == 2\
+		&& !ft_strncmp(shell->cmds[i].av[j],"-n",2))
+		j++; 
 	while (shell->cmds[i].av[j])
 	{
 		ft_putstr_fd(shell->cmds[i].av[j++], 1);
