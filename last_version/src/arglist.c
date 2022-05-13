@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/09 10:29:31 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/12 02:56:23 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ t_list	*lexer(t_env_list **env, char *line)
 	char	**token_array;
 	t_list	*tokens;
 
-	len = arg_list_create(&token_array, line);
 	tokens = 0;
+	len = arg_list_create(&token_array, line);
 	while (len--)
 	{
 		quote_remove(env, &token_array[len]);
@@ -90,4 +90,3 @@ t_list	*lexer(t_env_list **env, char *line)
 	free(token_array);
 	return (tokens);
 }
-

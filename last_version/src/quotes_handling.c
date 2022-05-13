@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/02 08:18:39 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/07 12:23:46 by abensett         ###   ########.fr       */
+/*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
+/*   Updated: 2022/05/12 02:27:46 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,23 @@ void	ft_str_delete(char **str, int start, int len)
 static char	find_first_quote(char *line)
 {
     char	*str[2];
-	char	quote_ptr;
+	char	quote;
     
 	str[0] = ft_strchr(line, '"');
 	str[1] = ft_strchr(line, '\'');
-	quote_ptr = 0;
+	quote = 0;
 	if (!str[0] && str[1])
-		quote_ptr = '\'';
+		quote = '\'';
 	else if (str[0] && !str[1])
-		quote_ptr = '"';
+		quote = '"';
 	else if (str[0] && str[1])
 	{
 		if (ft_strlen(str[0]) > ft_strlen(str[1]))
-			quote_ptr = '"';
+			quote = '"';
 		else
-			quote_ptr = '\'';
+			quote = '\'';
 	}
-	return (quote_ptr);
+	return (quote);
 }
 
 /*remove quote and expand what's not between ' ' */
@@ -62,12 +62,12 @@ void	quote_remove(t_env_list **env, char **line)
 	i = -1;
 	quote = 0;
 	look_for_quote = 0;
-
 	while ((*line)[++i])
 	{
 		if (!look_for_quote)
 			quote = find_first_quote(&((*line)[i]));
-		if (quote != '\'' && (*line)[i] == '$' && ft_isalpha((*line)[i + 1]))
+		if (quote != '\'' && (*line)[i] == '$'
+			 && ft_isalpha((*line)[i + 1]))
 			expansion(env, line, &i);
 		if (quote && (*line)[i] == quote)
 		{

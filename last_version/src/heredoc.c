@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 23:49:14 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/09 11:30:31 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/11 00:13:10 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int	is_eof(char *eof, char *line)
 	return (0);
 }
 
-char	*add_oldlines(char *oldlines, char *tmp, char *lines)
+/*put oldlines and tmp into lines*/
+static char	*fill_lines(char *oldlines, char *tmp, char *lines)
 {
 	int	i;
 
@@ -41,7 +42,11 @@ char	*add_oldlines(char *oldlines, char *tmp, char *lines)
 	return (lines);
 }
 
-char	*word_splitter(char *tmp, char *delimit, char *lines, char *oldlines)
+/* if delimit !=eof
+save lines in oldlines
+add tmp to lines 
+*/
+static char	*concatenate(char *tmp, char *delimit, char *lines, char *oldlines)
 {
 	while ((!tmp || !*tmp) || !is_eof(delimit, tmp))
 	{
@@ -52,7 +57,7 @@ char	*word_splitter(char *tmp, char *delimit, char *lines, char *oldlines)
 		}
 		lines = malloc(sizeof(char) * (ft_strlen(tmp)
 					+ ft_strlen(oldlines) + 2));
-		lines = add_oldlines(oldlines, tmp, lines);
+		lines = fill_lines(oldlines, tmp, lines);
 		lines[ft_strlen(tmp) + ft_strlen(oldlines)] = '\n';
 		lines[ft_strlen(tmp) + ft_strlen(oldlines) + 1] = 0;
 		free(oldlines);
@@ -62,6 +67,7 @@ char	*word_splitter(char *tmp, char *delimit, char *lines, char *oldlines)
 	return (lines);
 }
 
+/*heredoc handler*/
 int	heredoc(t_minishell *shell)
 {
 	char		*tmp;
@@ -71,8 +77,8 @@ int	heredoc(t_minishell *shell)
 
 	oldlines = 0;
 	lines = 0;
-	tmp = readline(">");
-	lines = word_splitter(tmp, shell->heredoc, lines, oldlines);
+	tmp = readline("heredoc>");
+	lines = concatenate(tmp, shell->heredoc, lines, oldlines);
 	pipe(pipefd);
 	write(pipefd[1], lines, ft_strlen(lines));
 	close(pipefd[1]);

@@ -6,52 +6,66 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:06:29 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/09 12:31:28 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/12 18:55:03 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+
 /* exec our buil-ins or exec binary file */
-void	execution(int i, t_minishell *shell)
+void	execution(int i, t_minishell *shell, t_exec *exec)
 {
 	const char	*cmd = shell->cmds[i].av[0];
 
-	if (ft_strlen(cmd) == 4 \
+	if (ft_strlen(cmd) == 4
 		&& !ft_strncmp(cmd, "echo", 4))
 		exec_binary(i, shell);
-	else if (ft_strlen(cmd) == 2 \
+	else if (ft_strlen(cmd) == 2
 		&& !ft_strncmp(cmd, "cd", 2))
 		cd(i, shell);
-	else if (ft_strlen(cmd) == 3 \
+	else if (ft_strlen(cmd) == 3
 		&& !ft_strncmp(cmd, "pwd", 3))
-		pwd();
-	else if (ft_strlen(cmd) == 6\
+		pwd(i, shell);
+	else if (ft_strlen(cmd) == 6
 		&& !ft_strncmp(cmd, "export", 6))
 		export(i, shell);
-	else if (ft_strlen(cmd) == 5 \
+	else if (ft_strlen(cmd) == 5
 		&& !ft_strncmp(cmd, "unset", 5))
 		unset(i, shell);
-	else if (ft_strlen(cmd) == 3 \
+	else if (ft_strlen(cmd) == 3
 		&& !ft_strncmp(cmd, "env", 3))
 		env(shell);
-	else if (ft_strlen(cmd) == 4 \
-		&& !ft_strncmp(cmd, "exit", 4))
-		ft_exit(0, shell);
 	else
 		exec_binary(i, shell);
+	exit(exec->pid);
 }
 
-void	reinit_fd(t_exec *exec)
+/*  - wait for child
+exit status 128 + N when fatal signal N*/
+static void	reinit_fd_and_handle_g_exit_status(t_exec *exec, t_minishell *shell)
 {
+	char	*g_exit_status_env;
+
 	dup2(exec->tmpin, 0);
 	dup2(exec->tmpout, 1);
 	close(exec->tmpin);
 	close(exec->tmpout);
 	waitpid(exec->pid, &exec->tmpret, 0);
+	if (g_exit_status < 128)
+	{
+		if 	(WIFEXITED(exec->tmpret))
+			g_exit_status = WEXITSTATUS(exec->tmpret);
+		else if (WIFSIGNALED(exec->pid))
+			g_exit_status = WTERMSIG(exec->tmpret);
+		g_exit_status_env = ft_strjoin("?=",ft_itoa(g_exit_status));
+		unset_env(shell, "?");
+		set_env(shell, g_exit_status_env);
+	}
 }
 
-int		make_fd(t_minishell *shell, t_exec *exec)
+/* copie stdin stdout */
+int	store_fd(t_minishell *shell, t_exec *exec)
 {
 	int	fdin;
 
@@ -66,7 +80,11 @@ int		make_fd(t_minishell *shell, t_exec *exec)
 	return (fdin);
 }
 
-int		get_out_file(int tmpout, t_minishell *shell)
+/* open (path,  flags -> O_CREAT, O_APPEND = >>,
+MODE -> define rights if O_CREAT)
+Open if outf : open en mode ajout ou non 
+else */
+int	get_out_file(int tmpout, t_minishell *shell)
 {
 	int	fdout;
 
@@ -84,15 +102,19 @@ int		get_out_file(int tmpout, t_minishell *shell)
 	return (fdout);
 }
 
-/* creates a new process for each command, the parent process waits 
-for the child to exec the command */
+/*
+ MAIN THING :
+-creates a new process for each command, the parent process waits
+for the child to exec the command
+- pipe it up
+*/
 void	executor(t_minishell *shell)
 {
 	int			i;
 	t_exec		exec;
 
 	i = -1;
-	exec.fdin = make_fd(shell, &exec);
+	exec.fdin = store_fd(shell, &exec);
 	while (shell->number_cmd >= ++i)
 	{
 		dup2(exec.fdin, 0);
@@ -108,10 +130,12 @@ void	executor(t_minishell *shell)
 		dup2(exec.fdout, 1);
 		close(exec.fdout);
 		exec.pid = fork();
-		if (exec.pid == -1)
-			perror("fork error");
+		ft_error(exec.pid, "fork");
 		if (exec.pid == 0)
-			execution(i, shell);
+			execution(i, shell, &exec);
 	}
-	reinit_fd(&exec);
+	reinit_fd_and_handle_g_exit_status(&exec, shell);
 }
+
+// 		if (exec.pid == -1)
+//			perror("fork error");

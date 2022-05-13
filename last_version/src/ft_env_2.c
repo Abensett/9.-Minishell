@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 23:49:14 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/07 13:23:33 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/12 17:37:11 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*get_env(t_env_list **env, char *key)
 			return (tmp->value);
 		tmp = tmp->next;
 	}	
-	return ("");
+	return (NULL);
 }
 
 /* from str=envp add t_env env to t_minishell shell  */
@@ -63,6 +63,7 @@ void	env_clear(t_env_list **env, void (*del)(void *))
 	}
 }
 
+/*remove env KEY from t_env_list of t_minishell SHELL*/
 void	unset_env(t_minishell *shell, char *key)
 {
 	int			i;
