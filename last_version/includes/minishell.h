@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:24:25 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/12 15:28:07 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/22 16:17:42 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ int					is_redirection_or_pipe(char c);
 
 /*The quotes handling*/
 void				quote_remove(t_env_list **env, char **line);
+void				quote_expansion(t_env_list **env, char **line);
+void				quote_expansion_heredoc(t_env_list **env, char **line);
 
 /*The expansion*/
 void				expansion(t_env_list **env, char **line, int *i);

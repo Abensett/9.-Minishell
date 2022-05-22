@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:21:02 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/12 17:27:23 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/16 23:22:53 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,27 @@ void	free_minishell(t_minishell *shell)
 	// int		i;
 	// int		j;
 
-	if (shell->outf)
-		free(shell->outf);
-	if (shell->inf)
-		free(shell->inf);
-	if (shell->heredoc)
-		free(shell->heredoc);
-	if (shell->prompt)
-		free(shell->prompt);
-	if (shell->env)
-		free(shell->env);
+	// if (shell->outf)
+	// 	free(shell->outf);
+	// if (shell->inf)
+	// 	free(shell->inf);
+	// if (shell->heredoc)
+	// 	free(shell->heredoc);
+	// if (shell->prompt)
+	// 	free(shell->prompt);
+	// if (shell->env)
+	// 	free(shell->env);
 
 	// i = 0;
-
-	// while (shell->cmds[i].av)
-	// {
-	// 	j = 0;
-	// 	while(shell->cmds[i].av && shell->cmds[i].av[j])
-	// 		free(shell->cmds[i].av[j++]);
-	// 	i++;
+	// if (i < shell->number_cmd)
+	// {	
+	// 	while (shell->cmds[i].av)
+	// 	{
+	// 		j = 0;
+	// 		while(shell->cmds[i].av && shell->cmds[i].av[j])
+	// 			free(shell->cmds[i].av[j++]);
+	// 		i++;
+	// 	}
 	// }
 	free(shell->envp);
 }
@@ -46,7 +48,7 @@ int	ft_exit(t_minishell *shell, char *line, t_list *token_list)
 	if (!line)
 	{
 		rl_clear_history();
-		free_minishell(shell);
+		free_minishell(shell); 
 		exit(g_exit_status);
 	}
 	if (ft_strlen(shell->cmds[0].av[0]) == 4

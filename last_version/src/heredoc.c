@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 23:49:14 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/11 00:13:10 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/22 16:54:57 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,12 @@ static char	*fill_lines(char *oldlines, char *tmp, char *lines)
 save lines in oldlines
 add tmp to lines 
 */
-static char	*concatenate(char *tmp, char *delimit, char *lines, char *oldlines)
+static char	*concatenate(char *tmp, char *delimit, char *lines, char *oldlines,
+						t_minishell *shell)
 {
 	while ((!tmp || !*tmp) || !is_eof(delimit, tmp))
 	{
+		quote_expansion_heredoc(&shell->env, &tmp);
 		if (lines != NULL)
 		{
 			oldlines = ft_strdup(lines);
@@ -62,8 +64,9 @@ static char	*concatenate(char *tmp, char *delimit, char *lines, char *oldlines)
 		lines[ft_strlen(tmp) + ft_strlen(oldlines) + 1] = 0;
 		free(oldlines);
 		free(tmp);
-		tmp = readline("heredoc>");
+		tmp = readline(">");
 	}
+
 	return (lines);
 }
 
@@ -77,9 +80,10 @@ int	heredoc(t_minishell *shell)
 
 	oldlines = 0;
 	lines = 0;
-	tmp = readline("heredoc>");
-	lines = concatenate(tmp, shell->heredoc, lines, oldlines);
+	tmp = readline(">");
+	lines = concatenate(tmp, shell->heredoc, lines, oldlines, shell);
 	pipe(pipefd);
+	quote_expansion_heredoc(&shell->env, &lines);
 	write(pipefd[1], lines, ft_strlen(lines));
 	close(pipefd[1]);
 	return (pipefd[0]);

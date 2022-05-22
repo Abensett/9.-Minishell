@@ -26,7 +26,7 @@ DIROBJ			= objs/
 
 CC				= gcc
 
-## CFLAGS 			=  -Wall -Wextra -Werror -g
+CFLAGS 			=  -Wall -Wextra -Werror -g
 
 INCLUDES 		= -I ./includes -I /opt/homebrew/opt/readline/include
 
@@ -82,12 +82,12 @@ $(NAME):	$(DIROBJS)
 
 
 clean:
-			@make -C libft clean
+#			@make -C libft clean
 			@rm -rf $(OBJS)	$(DIROBJ)
 			@printf "\n[$(GREEN)cleaned$(WHITE)] .o FILES \n"
 
 fclean:		clean
-			@make -C libft fclean
+#			@make -C libft fclean
 			@rm -rf $(NAME)
 			@printf "\n[$(GREEN)cleaned$(WHITE)] $(NAME) \n"
 

@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/12 02:27:46 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/22 16:31:54 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,31 @@ void	quote_remove(t_env_list **env, char **line)
 		if (!look_for_quote)
 			quote = find_first_quote(&((*line)[i]));
 		if (quote != '\'' && (*line)[i] == '$'
-			 && ft_isalpha((*line)[i + 1]))
+			 && (ft_isalpha((*line)[i + 1]) || (*line)[i + 1] == '?') )
+			expansion(env, line, &i);
+		if (quote && (*line)[i] == quote)
+		{
+			ft_str_delete(line, i--, 1);
+			look_for_quote ^= 1;
+		}
+	}
+}
+
+void	quote_expansion_heredoc(t_env_list **env, char **line)
+{
+	int		i;
+	char	quote;
+	int		look_for_quote;
+
+	i = -1;
+	quote = 0;
+	look_for_quote = 0;
+	while ((*line)[++i])
+	{
+		if (!look_for_quote)
+			quote = find_first_quote(&((*line)[i]));
+		if (quote != '\'' && (*line)[i] == '$'
+			 && (ft_isalpha((*line)[i + 1]) || (*line)[i + 1] == '?') )
 			expansion(env, line, &i);
 		if (quote && (*line)[i] == quote)
 		{

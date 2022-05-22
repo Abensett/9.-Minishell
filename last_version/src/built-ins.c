@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:21:02 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/12 18:39:06 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/16 23:56:53 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,18 @@ void	export(int i, t_minishell *shell)
 /* unset the variable */
 int	unset(int i, t_minishell *shell)
 {
+	int	j;
+	
+	j = 0;
+	while(*shell->cmds[i].av[j])
+	{
+		if (!ft_isalpha(*shell->cmds[i].av[1]))
+		{
+			perror("unset");
+			exit (1);
+		}
+		j++;
+	}
 	unset_env(shell, shell->cmds[i].av[1]);
 	return (0);
 }

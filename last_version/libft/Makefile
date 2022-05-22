@@ -24,6 +24,7 @@ SRC = src/ft_abs.c \
 	src/ft_double_abs.c \
 	src/ft_double_pow.c\
 	src/ft_isalnum.c \
+	src/ft_isstr_alnum.c \
 	src/ft_isdigit.c \
 	src/ft_isalpha.c \
 	src/ft_isascii.c \

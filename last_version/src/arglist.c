@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/12 02:56:23 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/16 21:49:17 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ t_list	*lexer(t_env_list **env, char *line)
 	while (len--)
 	{
 		quote_remove(env, &token_array[len]);
-		ft_lstadd_front(&tokens, ft_lstnew(token_array[len]));
+		if (ft_strlen(token_array[len]) != 0)
+			ft_lstadd_front(&tokens, ft_lstnew(token_array[len]));
 	}
 	free(token_array);
 	return (tokens);

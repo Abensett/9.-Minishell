@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:06:29 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/12 18:55:03 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/22 15:10:15 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,22 @@ static void	reinit_fd_and_handle_g_exit_status(t_exec *exec, t_minishell *shell)
 int	store_fd(t_minishell *shell, t_exec *exec)
 {
 	int	fdin;
-
+	
 	exec->tmpin = dup(0);
 	exec->tmpout = dup(1);
 	if (shell->inf)
 		fdin = open(shell->inf, O_RDONLY);
 	else if (shell->heredoc != 0)
+	{
+		// ft_signaux("heredoc");
 		fdin = heredoc(shell);
+	}
 	else
 		fdin = dup(exec->tmpin);
 	return (fdin);
 }
+
+
 
 /* open (path,  flags -> O_CREAT, O_APPEND = >>,
 MODE -> define rights if O_CREAT)
@@ -114,7 +119,9 @@ void	executor(t_minishell *shell)
 	t_exec		exec;
 
 	i = -1;
+
 	exec.fdin = store_fd(shell, &exec);
+	ft_signaux("command");
 	while (shell->number_cmd >= ++i)
 	{
 		dup2(exec.fdin, 0);

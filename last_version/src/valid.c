@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/12 01:32:03 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/22 15:11:04 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	is_valid_redir(char *token, char *next_token)
 	if (token[0] == '<' && ft_strlen(token) == 1 \
 			&& open(next_token, O_RDONLY) == -1)
 	{
-		tmp = ft_strdup("minishell: ");
+		tmp = ft_strdup("bash: ");
 		ft_str_add(&tmp, ft_strlen(tmp), next_token);
 		perror(tmp);
 		free(tmp);
@@ -48,6 +48,26 @@ static int	is_valid_redir(char *token, char *next_token)
 	return (1);
 }
 
+static int	is_valid_folder(char *token)
+{
+	char	*tmp;
+
+	if (token[0] == '/' && !token[1])
+	{
+		tmp = ft_strdup("minishell: ");
+		perror(tmp);
+		free(tmp);
+		return (0);
+	}
+	else if (token[0] == '/')
+	{
+		tmp = ft_strdup("minishell: ");
+		perror(tmp);
+		free(tmp);
+		return (0);
+	}
+	return (1);
+}
 /*check if after < or pipe is  a readable file, or if empty arg*/
 int		is_valid(t_list *token_lst)
 {
@@ -65,7 +85,8 @@ int		is_valid(t_list *token_lst)
 			if (tmp->next)
 				next_token = tmp->next->content;
 			if (!is_valid_operator(next_token) \
-					|| !is_valid_redir(token, next_token))
+					|| !is_valid_redir(token, next_token) \
+					|| !is_valid_folder(token))
 				return (0);
 		}
 		tmp = tmp->next;

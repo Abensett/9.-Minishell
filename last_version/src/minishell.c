@@ -38,8 +38,9 @@ int interactive(char **envp)
 	shell.envp = set_envp(shell.env);
 	while(1)
 	{
-		ft_prompt(&shell);
 		ft_signaux("interactive");
+		ft_signaux("heredoc");
+		ft_prompt(&shell);
 		line = readline(shell.prompt);
 		if (!line)
 		{
@@ -51,7 +52,7 @@ int interactive(char **envp)
 		add_history(line);
 		space_handler(&line);
 		token_list=lexer(&shell.env,line);
-		if (!is_valid(token_list))
+		if (!is_valid(token_list) || !token_list)    // evite le segfault de la chaine vide
 			continue ;
 		parser(&token_list, &shell);
 		ft_exit(&shell, line, token_list);
@@ -66,7 +67,7 @@ int interactive(char **envp)
 int main(int ac, char **av, char **envp)
 {
 	if(ac > 2)
-			non_interactive_mode(av + 2, envp);
+		non_interactive_mode(av + 2, envp);
 	else if (ac == 1)
 		interactive(envp);
 	else

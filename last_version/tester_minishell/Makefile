@@ -6,7 +6,7 @@
 #    By: abensett <abensett@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/30 11:15:47 by cmariot           #+#    #+#              #
-#    Updated: 2022/05/12 18:17:50 by abensett         ###   ########.fr        #
+#    Updated: 2022/05/16 22:12:15 by abensett         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ CFLAGS			+= -I ./includes
 
 
 LFLAGS			= -Wall -Wextra -Werror -g3
-LIB_LFLAGS		= -L $(LIBFT) -lft
+LIB_LFLAGS		= -L $(LIBFT) ../libft2/libft.a
 
 # Debug flag, use with 'make DEBUG=1'
 ifeq ($(DEBUG), 1)
