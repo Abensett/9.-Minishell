@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/22 16:31:54 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/22 17:07:18 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	quote_remove(t_env_list **env, char **line)
 		}
 	}
 }
-
+/*expand what's not between ' ', used for heredoc */
 void	quote_expansion_heredoc(t_env_list **env, char **line)
 {
 	int		i;

@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:06:29 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/22 15:10:15 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/23 17:05:04 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ static void	reinit_fd_and_handle_g_exit_status(t_exec *exec, t_minishell *shell)
 		g_exit_status_env = ft_strjoin("?=",ft_itoa(g_exit_status));
 		unset_env(shell, "?");
 		set_env(shell, g_exit_status_env);
+		g_exit_status = 0;
+		free(g_exit_status_env);
 	}
 }
 
@@ -75,8 +77,20 @@ int	store_fd(t_minishell *shell, t_exec *exec)
 		fdin = open(shell->inf, O_RDONLY);
 	else if (shell->heredoc != 0)
 	{
-		// ft_signaux("heredoc");
+		ft_signaux("heredoc");
+		if(g_exit_status == 128 + SIGINT)
+		{
+			g_exit_status = 1;
+			return (-1);
+		}
 		fdin = heredoc(shell);
+		if(fdin == -1)
+		{
+			g_exit_status = 0;
+			close(exec->tmpin);
+			close(exec->tmpout);
+		}
+		// printf("fdin=%d\n",fdin);
 	}
 	else
 		fdin = dup(exec->tmpin);
@@ -113,14 +127,45 @@ int	get_out_file(int tmpout, t_minishell *shell)
 for the child to exec the command
 - pipe it up
 */
+
+int	ft_is_builtin(int i, t_minishell *shell)
+{
+	const char	*cmd = shell->cmds[i].av[0];
+
+	if( shell->number_cmd != 0)
+		return (0);
+	if (ft_strlen(cmd) == 2
+		&& !ft_strncmp(cmd, "cd", 2))
+	{	
+		cd(i, shell);
+		return (1);
+	}
+	else if (ft_strlen(cmd) == 6
+	&& !ft_strncmp(cmd, "export", 6))
+	{
+		export(i, shell);
+		return (1);
+	}
+	else if (ft_strlen(cmd) == 5
+		&& !ft_strncmp(cmd, "unset", 5))
+	{
+		unset(i, shell);
+		return (1);
+	}
+	return (0);
+
+}
+
 void	executor(t_minishell *shell)
 {
 	int			i;
 	t_exec		exec;
 
 	i = -1;
-
 	exec.fdin = store_fd(shell, &exec);
+	ft_signaux("heredoc");
+	if (exec.fdin == -1 || ft_is_builtin(shell->number_cmd, shell)) // stop heredo and exec 1 buiiltin export, etc
+		return;
 	ft_signaux("command");
 	while (shell->number_cmd >= ++i)
 	{

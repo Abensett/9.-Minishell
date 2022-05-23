@@ -36,10 +36,10 @@ int interactive(char **envp)
 
 	shell.env = init_env(envp);
 	shell.envp = set_envp(shell.env);
+	set_env(&shell, "?=0");
 	while(1)
 	{
 		ft_signaux("interactive");
-		ft_signaux("heredoc");
 		ft_prompt(&shell);
 		line = readline(shell.prompt);
 		if (!line)

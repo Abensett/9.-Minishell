@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:21:02 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/16 23:56:53 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/23 17:11:13 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,31 @@ set arg=2 :unset the variable before setting the new value */
 void	export(int i, t_minishell *shell)
 {
 	char	*tmp;
+	int 	j;
 
+	j = 1;
+	g_exit_status = 0;
 	if (!shell->cmds[i].av[1])
 	{
 		env(shell);
 		return ;
 	}
-	tmp = ft_strchr(shell->cmds[i].av[1], '=');
-	unset_env(shell, ft_substr(shell->cmds[i].av[1], 0, \
-		ft_strlen(shell->cmds[i].av[1]) - ft_strlen(tmp)));
-	set_env(shell, shell->cmds[i].av[1]);
+	while (shell->cmds[i].av[j])
+	{
+		if (!ft_strncmp(shell->cmds[i].av[j], "=", 1))
+		{
+			ft_exit_status(1, shell);
+			perror( "export");
+			j++;
+			continue ;
+		}
+		tmp = ft_strchr(shell->cmds[i].av[j], '=');
+		if (!tmp)
+			return;
+		unset_env(shell, ft_substr(shell->cmds[i].av[j], 0, \
+			ft_strlen(shell->cmds[i].av[j]) - ft_strlen(tmp)));
+		set_env(shell, shell->cmds[i].av[j++]);
+	}
 }
 
 /* unset the variable */
@@ -84,17 +99,31 @@ int	unset(int i, t_minishell *shell)
 {
 	int	j;
 	
-	j = 0;
-	while(*shell->cmds[i].av[j])
+	j = 1;
+	if (!shell->cmds[i].av[1])
+	{
+		ft_exit_status(0, shell);
+		return (0);
+	}
+	while(shell->cmds[i].av[j])
 	{
 		if (!ft_isalpha(*shell->cmds[i].av[1]))
 		{
 			perror("unset");
-			exit (1);
+			ft_exit_status(1, shell);
+			return(1);
 		}
 		j++;
 	}
-	unset_env(shell, shell->cmds[i].av[1]);
+	j = 1;
+	while(shell->cmds[i].av[j])
+	{
+		if (ft_strlen(shell->cmds[i].av[j]) == 1
+		&& !ft_strncmp(shell->cmds[i].av[j], "=", 1))
+			 perror( "unset");
+		unset_env(shell, shell->cmds[i].av[j]);
+		j++;
+	}
 	return (0);
 }
 

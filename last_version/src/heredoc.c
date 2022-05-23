@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 23:49:14 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/22 16:54:57 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/23 03:04:16 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,16 @@ static char	*concatenate(char *tmp, char *delimit, char *lines, char *oldlines,
 {
 	while ((!tmp || !*tmp) || !is_eof(delimit, tmp))
 	{
-		quote_expansion_heredoc(&shell->env, &tmp);
+		ft_signaux("heredoc");
+		printf("%d\n", g_exit_status);
+		if(g_exit_status == 128 + SIGINT)
+			return NULL;
 		if (lines != NULL)
 		{
 			oldlines = ft_strdup(lines);
 			free(lines);
 		}
+		quote_expansion_heredoc(&shell->env, &tmp);
 		lines = malloc(sizeof(char) * (ft_strlen(tmp)
 					+ ft_strlen(oldlines) + 2));
 		lines = fill_lines(oldlines, tmp, lines);
@@ -65,8 +69,9 @@ static char	*concatenate(char *tmp, char *delimit, char *lines, char *oldlines,
 		free(oldlines);
 		free(tmp);
 		tmp = readline(">");
+		if (!tmp)
+			break;
 	}
-
 	return (lines);
 }
 
@@ -81,9 +86,12 @@ int	heredoc(t_minishell *shell)
 	oldlines = 0;
 	lines = 0;
 	tmp = readline(">");
+	printf("exit = %d\n",g_exit_status);
+
+	if (!tmp)
+		return (0);
 	lines = concatenate(tmp, shell->heredoc, lines, oldlines, shell);
 	pipe(pipefd);
-	quote_expansion_heredoc(&shell->env, &lines);
 	write(pipefd[1], lines, ft_strlen(lines));
 	close(pipefd[1]);
 	return (pipefd[0]);
