@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:21:02 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/22 22:27:02 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/23 17:17:20 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	ft_signaux(char *mode)
 	}
 	else if (!ft_strncmp(mode,"command",8))
 	{
-		printf("cmd\n");
+		// printf("cmd\n");
 		ctrl_c.sa_handler = &ft_signals_command;
 		ctrl_slash.sa_handler = &ft_signals_command;
 	}
