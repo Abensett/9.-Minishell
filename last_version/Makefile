@@ -50,6 +50,7 @@ SRC_FILES = arglist.c \
 			exec_binary.c \
 			executor.c \
 			built-ins.c \
+			built-ins_2.c \
 			ft_error.c \
 			non_interactive.c \
 			signals.c \

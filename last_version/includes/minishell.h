@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:24:25 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/24 17:55:48 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/25 14:38:35 by shamizi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+#include <errno.h>
 
 /* global variable : self-explanatory */
 extern int	g_exit_status;
@@ -132,7 +133,7 @@ int					exec_binary(int num, t_minishell *shell);
 
 /* The builtins.c */
 int					echo(int i, t_minishell *shell);
-int					cd(int i, t_minishell *shell);
+void				cd(int i, t_minishell *shell);
 int					pwd(int i, t_minishell *shell);
 void				export(int i, t_minishell *shell);
 int					unset(int i, t_minishell *shell);
