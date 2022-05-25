@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:21:02 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/23 17:17:20 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/24 18:53:14 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	ft_signals_here_doc(int sig)
 	if (sig == SIGINT)
 	{
 		g_exit_status = 130;
-		// printf("heredoc %d \n",sig + 128);
 		ft_putchar_fd('\n', 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();

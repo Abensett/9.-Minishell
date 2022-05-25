@@ -42,12 +42,13 @@ int interactive(char **envp)
 		ft_signaux("interactive");
 		ft_prompt(&shell);
 		line = readline(shell.prompt);
+		free(shell.prompt);
 		if (!line)
 		{
 			ft_putendl_fd("exit", 2);
 			ft_exit(&shell, line, token_list);
 		}
-		if (!ft_strlen(line))
+		if (!ft_strlen(line) || quote_check(&line))
 			continue ;
 		add_history(line);
 		space_handler(&line);
@@ -59,7 +60,6 @@ int interactive(char **envp)
 		executor(&shell);
 		free(line);
 		ft_lstclear(&token_list, free);
-		free(shell.prompt);
 	}
 	return (0);
 }

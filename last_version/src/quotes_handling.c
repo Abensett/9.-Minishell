@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/22 17:07:18 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/24 18:07:53 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ void	ft_str_delete(char **str, int start, int len)
 /* return first quote between ' and " */
 static char	find_first_quote(char *line)
 {
-    char	*str[2];
+	char	*str[2];
 	char	quote;
-    
+
 	str[0] = ft_strchr(line, '"');
 	str[1] = ft_strchr(line, '\'');
 	quote = 0;
@@ -67,7 +67,7 @@ void	quote_remove(t_env_list **env, char **line)
 		if (!look_for_quote)
 			quote = find_first_quote(&((*line)[i]));
 		if (quote != '\'' && (*line)[i] == '$'
-			 && (ft_isalpha((*line)[i + 1]) || (*line)[i + 1] == '?') )
+			&& (ft_isalpha((*line)[i + 1]) || (*line)[i + 1] == '?'))
 			expansion(env, line, &i);
 		if (quote && (*line)[i] == quote)
 		{
@@ -76,6 +76,37 @@ void	quote_remove(t_env_list **env, char **line)
 		}
 	}
 }
+
+/*return error if quote not closed*/
+int	quote_check(char **line)
+{
+	char	*tmp;
+	char	quotes[2];
+
+	quotes[0] = find_first_quote(*line);
+	quotes[1] = quotes[0];
+	if (quotes[1])
+	{
+		tmp = ft_strchr(*line, quotes[1]);
+		while (tmp)
+		{
+			tmp = ft_strchr(++tmp, quotes[1]);
+			if (!tmp)
+			{
+				ft_putendl_fd("Unexpected EOF looking for matching '\"'", 2);
+				g_exit_status = 258;
+				return (1);
+			}
+			else
+				quotes[1] = find_first_quote(++tmp);
+			if (!tmp || !quotes[1])
+				break ;
+			tmp = ft_strchr(tmp, quotes[1]);
+		}
+	}
+	return (0);
+}
+
 /*expand what's not between ' ', used for heredoc */
 void	quote_expansion_heredoc(t_env_list **env, char **line)
 {
@@ -91,7 +122,7 @@ void	quote_expansion_heredoc(t_env_list **env, char **line)
 		if (!look_for_quote)
 			quote = find_first_quote(&((*line)[i]));
 		if (quote != '\'' && (*line)[i] == '$'
-			 && (ft_isalpha((*line)[i + 1]) || (*line)[i + 1] == '?') )
+			&& (ft_isalpha((*line)[i + 1]) || (*line)[i + 1] == '?'))
 			expansion(env, line, &i);
 		if (quote && (*line)[i] == quote)
 		{

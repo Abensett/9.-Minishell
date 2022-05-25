@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 23:49:14 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/23 03:04:16 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/24 18:53:15 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,6 @@ static char	*concatenate(char *tmp, char *delimit, char *lines, char *oldlines,
 {
 	while ((!tmp || !*tmp) || !is_eof(delimit, tmp))
 	{
-		ft_signaux("heredoc");
-		printf("%d\n", g_exit_status);
-		if(g_exit_status == 128 + SIGINT)
-			return NULL;
 		if (lines != NULL)
 		{
 			oldlines = ft_strdup(lines);
@@ -85,9 +81,10 @@ int	heredoc(t_minishell *shell)
 
 	oldlines = 0;
 	lines = 0;
+	ft_signaux("heredoc");
 	tmp = readline(">");
-	printf("exit = %d\n",g_exit_status);
-
+	if(g_exit_status == 128 + SIGINT)
+			return (0);
 	if (!tmp)
 		return (0);
 	lines = concatenate(tmp, shell->heredoc, lines, oldlines, shell);
