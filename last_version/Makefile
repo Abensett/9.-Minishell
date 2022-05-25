@@ -49,6 +49,7 @@ SRC_FILES = arglist.c \
 			heredoc.c \
 			exec_binary.c \
 			executor.c \
+			executor2.c \
 			built-ins.c \
 			built-ins_2.c \
 			ft_error.c \

@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:24:25 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/25 14:38:35 by shamizi          ###   ########.fr       */
+/*   Updated: 2022/05/25 17:28:25 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,10 @@ t_simple_command	*fill_cmds(t_list *t, t_simple_command *cmds,
 /* The executor.c*/
 void				execution(int i, t_minishell *shell, t_exec *exec);
 void				executor(t_minishell *shell);
+
+/* The executor2.c*/
+int					ft_is_builtin(int i, t_minishell *shell);
+void			execution(int i, t_minishell *shell, t_exec *exec);
 
 /*The heredoc.*/
 int					heredoc(t_minishell *shell);

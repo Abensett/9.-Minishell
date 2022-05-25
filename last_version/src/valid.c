@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/22 15:11:04 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/25 15:33:38 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int		is_valid(t_list *token_lst)
 	while (tmp)
 	{
 		token = tmp->content;
-		if (is_redirection_or_pipe(token[0]))
+		if (is_redirection_or_pipe(token[0]) && ft_strlen(token) == 1)
 		{
 			next_token = 0;
 			if (tmp->next)
