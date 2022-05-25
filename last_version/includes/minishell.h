@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:24:25 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/25 17:28:25 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/25 23:59:36 by shamizi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ int					ft_exit(t_minishell *shell, char *line, t_list *token_list);
 /* The ft_error */
 void				ft_error(int i, char *str);
 void				ft_exit_status(int i, t_minishell *shell);
-
+void				ft_free(t_minishell *shell, char *mine, t_list *token_list);
 /* The non interactive */
 void				non_interactive_mode(char **array, char **env);
 int					usage(void);

@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:24:05 by abensett          #+#    #+#             */
-/*   Updated: 2022/04/11 22:36:45 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/25 23:57:29 by shamizi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,7 @@ int interactive(char **envp)
 		parser(&token_list, &shell);
 		ft_exit(&shell, line, token_list);
 		executor(&shell);
-		free(line);
-		ft_lstclear(&token_list, free);
+		ft_free(&shell, line, token_list);
 	}
 	return (0);
 }
