@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:21:02 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/26 00:03:15 by shamizi          ###   ########.fr       */
+/*   Updated: 2022/05/26 15:27:04 by shamizi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,12 +115,12 @@ void	free_minishell2(t_minishell *shell)
 	//	freestrings(shell->envp);
 	//	if(shell->paths)
 	//		freestrings(shell->paths);
-	if(shell->inf)
-		free(shell->inf);
-	if(shell->outf)
-		free(shell->outf);
-	if(shell->heredoc)
-		free(shell->heredoc);
+//	if(shell->inf)
+//		free(shell->inf);
+//	if(shell->outf)
+//		free(shell->outf);
+//	if(shell->heredoc)
+//		free(shell->heredoc);
 	if(shell->cmds)
 		freecmds(shell->cmds);
 //	if (shell->env)

@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:24:05 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/25 23:57:29 by shamizi          ###   ########.fr       */
+/*   Updated: 2022/05/26 15:16:53 by shamizi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int interactive(char **envp)
 
 	shell.env = init_env(envp);
 	shell.envp = set_envp(shell.env);
-	set_env(&shell, "?=0");
+	//set_env(&shell, "?=0");
 	while(1)
 	{
 		ft_signaux("interactive");

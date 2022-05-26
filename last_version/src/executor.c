@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:06:29 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/25 23:16:13 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/26 15:20:16 by shamizi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ exit status 128 + N when fatal signal N*/
 static void	reinit_fd_and_handle_g_exit_status(t_exec *exec, t_minishell *shell)
 {
 	char	*g_exit_status_env;
+	char	*tmp;
 
+	tmp = ft_itoa(g_exit_status);
 	dup2(exec->tmpin, 0);
 	dup2(exec->tmpout, 1);
 	close(exec->tmpin);
@@ -31,13 +33,14 @@ static void	reinit_fd_and_handle_g_exit_status(t_exec *exec, t_minishell *shell)
 			g_exit_status = WEXITSTATUS(exec->tmpret);
 		else if (WIFSIGNALED(exec->pid))
 			g_exit_status = WTERMSIG(exec->tmpret);
-		g_exit_status_env = ft_strjoin("?=",ft_itoa(g_exit_status));
+		g_exit_status_env = ft_strjoin("?=",tmp);
 		unset_env(shell, "?");
 		set_env(shell, g_exit_status_env);
 		g_exit_status = 0;
 		free(g_exit_status_env);
 	}
 	while (wait(NULL)>0); // waits for all children process
+	free(tmp);
 
 }
 

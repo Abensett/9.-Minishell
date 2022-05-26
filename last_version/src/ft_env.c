@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 03:16:42 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/23 03:17:30 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/26 15:08:19 by shamizi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,17 @@ t_env_list	*env_new(char *str)
 	char		*tmp;
 	t_env_list	*returned;
 
-	returned = malloc(sizeof(t_env_list));
-	if (!returned)
-		return (0);
-	returned->next = 0;
-	returned->all = ft_strdup(str);
 	tmp = ft_strchr(str, '=');
+	if (!tmp)
+		return (0);
+	returned = malloc(sizeof(t_env_list));
+	if (!returned || !str)
+		return (0);
+	returned->next = NULL;
+	returned->all = NULL;
+	returned->key = NULL;
+	returned->value = NULL;
+	returned->all = ft_strdup(str);
 	returned->key = ft_substr(str, 0, ft_strlen(str) - ft_strlen(tmp));
 	returned->value = ft_strdup(tmp + 1);
 	return (returned);
@@ -45,6 +50,7 @@ void	env_add_back(t_env_list **env, t_env_list *new)
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = new;
+	tmp->next->next = NULL;
 }
 
 /* cast from char **envp return t_env_list */
@@ -53,7 +59,7 @@ t_env_list	*init_env(char **envp)
 	int			i;
 	t_env_list	*env;
 
-	env = 0;
+	env = NULL;
 	i = 0;
 	while (envp[i])
 		env_add_back(&env, env_new(envp[i++]));
