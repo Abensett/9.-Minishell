@@ -6,11 +6,12 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/09 10:29:31 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/26 16:09:20 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 /*if first quote turn quote into it else if quote = c then quote = 0 */
 void	type_quote(char *quote, char c)
 {
@@ -80,14 +81,14 @@ t_list	*lexer(t_env_list **env, char *line)
 	char	**token_array;
 	t_list	*tokens;
 
-	len = arg_list_create(&token_array, line);
 	tokens = 0;
+	len = arg_list_create(&token_array, line);
 	while (len--)
 	{
 		quote_remove(env, &token_array[len]);
-		ft_lstadd_front(&tokens, ft_lstnew(token_array[len]));
+		if (ft_strlen(token_array[len]) != 0)
+			ft_lstadd_front(&tokens, ft_lstnew(token_array[len]));
 	}
 	free(token_array);
 	return (tokens);
 }
-

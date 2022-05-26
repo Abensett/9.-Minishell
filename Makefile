@@ -26,7 +26,7 @@ DIROBJ			= objs/
 
 CC				= gcc
 
-CFLAGS 			= -Wall -Wextra -Werror -g
+CFLAGS 			=  -Wall -Wextra -Werror -g
 
 INCLUDES 		= -I ./includes -I /opt/homebrew/opt/readline/include
 
@@ -37,22 +37,26 @@ LDFLAGS			= -L/opt/homebrew/opt/readline/lib -lreadline libft/libft.a
 #                                SOURCE FILES                                  #
 # **************************************************************************** #
 
-SRC_FILES = built-ins.c \
-			built-ins_2.c \
-			exec_binary.c \
-			executor.c \
+SRC_FILES = arglist.c \
+			quotes_handling.c \
+			expansion.c \
+			space_handling.c \
 			ft_env.c \
 			ft_env_2.c \
-			minishell.c \
-			arglist.c \
-			expansion.c \
 			parsing.c \
 			parsing_utils.c \
-			quotes_handling.c \
-			space_handling.c \
 			valid.c \
-			heredoc.c
-
+			heredoc.c \
+			exec_binary.c \
+			executor.c \
+			executor2.c \
+			built-ins.c \
+			built-ins_2.c \
+			ft_error.c \
+			non_interactive.c \
+			signals.c \
+			minishell.c \
+			exit_clear.c
 
 OBJ := $(SRC_FILES:.c=.o)
 
@@ -80,12 +84,12 @@ $(NAME):	$(DIROBJS)
 
 
 clean:
-			@make -C libft clean
+#			@make -C libft clean
 			@rm -rf $(OBJS)	$(DIROBJ)
 			@printf "\n[$(GREEN)cleaned$(WHITE)] .o FILES \n"
 
 fclean:		clean
-			@make -C libft fclean
+#			@make -C libft fclean
 			@rm -rf $(NAME)
 			@printf "\n[$(GREEN)cleaned$(WHITE)] $(NAME) \n"
 

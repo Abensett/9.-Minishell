@@ -6,14 +6,16 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 00:52:39 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/09 11:47:19 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/12 16:17:07 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+extern int g_exit_status;
+
 /*create the path we need to exec our binary file with execve(PATHS,CMD,ENVP)*/
-char	**create_paths(char *cmd, char **envp)
+char	**make_paths(char *cmd, char **envp)
 {
 	int		i;
 	char	**paths;
@@ -40,11 +42,10 @@ int	exec_binary(int num, t_minishell *shell)
 {
 	int			i;
 
-	shell->paths = create_paths(shell->cmds[num].av[0], shell->envp);
+	shell->paths = make_paths(shell->cmds[num].av[0], shell->envp);
 	i = -1;
 	while (shell->paths[++i])
-	{
 		execve(shell->paths[i], shell->cmds[num].av, shell->envp);
-	}
-	return (0);
+	perror("cmd");
+	exit(127);
 }

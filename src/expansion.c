@@ -5,11 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/02 08:18:39 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/07 13:27:41 by abensett         ###   ########.fr       */
+/*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
+/*   Updated: 2022/05/26 15:49:24 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -21,13 +20,14 @@ static char	*find_key(char *str)
 
 	i = -1;
 	while (str[++i])
-		if (str[i] == ' ' || str[i] == '"' || str[i] == '\'')
+		if (str[i] == '"' || str[i] == ' ' || str[i] == '\'')
 			break ;
 	key = ft_substr(str, 0, i);
 	return (key);
 }
 
-/* Turn variables into their values thanks to get_env and str modifying functions" */
+/* Turn variables into their values thanks to get_env
+and str modifying functions" */
 void	expansion(t_env_list **env, char **line, int *i)
 {
 	int		len;
