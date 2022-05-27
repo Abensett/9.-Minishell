@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:21:02 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/25 18:30:06 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/27 21:08:51 by shamizi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ set arg=2 :unset the variable before setting the new value */
 void	export(int i, t_minishell *shell)
 {
 	char	*tmp;
+	char	*substr;
 	int 	j;
 
 	j = 1;
@@ -88,9 +89,10 @@ void	export(int i, t_minishell *shell)
 		tmp = ft_strchr(shell->cmds[i].av[j], '=');
 		if (!tmp)
 			return;
-		unset_env(shell, ft_substr(shell->cmds[i].av[j], 0, \
-			ft_strlen(shell->cmds[i].av[j]) - ft_strlen(tmp)));
+		substr = ft_substr(shell->cmds[i].av[j], 0, ft_strlen(shell->cmds[i].av[j]) - ft_strlen(tmp));
+		unset_env(shell,substr);
 		set_env(shell, shell->cmds[i].av[j++]);
+		free(substr);
 	}
 }
 

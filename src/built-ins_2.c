@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:21:02 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/27 19:15:10 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/27 21:18:16 by shamizi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,37 @@
 void	export2(t_minishell *shell, char *str)
 {
 	char *tmp;
+	char *tmp2;
 
 	tmp = ft_strchr(str, '=');
-	unset_env(shell, ft_substr(str, 0, ft_strlen(str) - ft_strlen(tmp)));
+	tmp2 = ft_substr(str, 0, ft_strlen(str) - ft_strlen(tmp));
+	unset_env(shell, tmp2);
 	set_env(shell, str);
+	free(tmp2);
 }
 
-void	cd_error(char *s1, char *s2)
+void	cd_error(char *s1, char *s2, t_minishell *shell)
 {
 	char *tmp;
+	char *tmp2;
+	char *tmp3;
 
+	ft_exit_status(1, shell);
 	tmp = ft_strjoin(s1,sys_errlist[errno]);
-	tmp = ft_strjoin(tmp, ": ");
-	tmp = ft_strjoin(tmp, s2);
-	ft_putendl_fd(tmp, 2);
+	tmp2 = ft_strjoin(tmp, ": ");
+	tmp3 = ft_strjoin(tmp2, s2);
+	ft_putendl_fd(tmp3, 2);
 	free(tmp);
+	free(tmp2);
+	free(tmp3);
 }
 void	cd(int i, t_minishell *shell)
 {
 	char *buff;
 	char *old;
 	char *new;
+	char *cwd;
+	char *cwd2;
 	size_t size;
 
 	buff = 0;
@@ -46,21 +56,25 @@ void	cd(int i, t_minishell *shell)
 		new = get_env(&shell->env, "HOME");
 	else
 		new = shell->cmds[i].av[1];
-	old = ft_strjoin("OLDPWD=", getcwd(buff, size));
+	cwd = getcwd(buff, size);
+	old = ft_strjoin("OLDPWD=", cwd);
 	if(chdir(new) == 0)
 	{
-		new = ft_strjoin("PWD=", getcwd(buff, size));
+		cwd2 = getcwd(buff, size);
+		new = ft_strjoin("PWD=", cwd2);
 		if(new && old)
 		{
 
 			export2(shell, old);
 			export2(shell, new);
 		}
+		free(new);
+		free(cwd2);
 	}
 	else
-		cd_error("cd: ", shell->cmds[i].av[1]);
+		cd_error("cd: ", shell->cmds[i].av[1], shell);
 	free(buff);
 	free(old);
-	free(new);
+	free(cwd);
 }
 
