@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:06:29 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/27 18:19:56 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/27 20:37:52 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,10 @@ static void	reinit_fd_and_handle_g_exit_status(t_exec *exec, t_minishell *shell)
 		set_env(shell, g_exit_status_env);
 		g_exit_status = 0;
 		free(g_exit_status_env);
+		free(tmp);
+
 	}
 	while (wait(NULL)>0); // waits for all children process
-	free(tmp);
-
-
 }
 
 /* copie stdin stdout */
@@ -91,7 +90,7 @@ int	get_out_file(int tmpout, t_minishell *shell)
 			fdout = open(shell->outf, O_APPEND | O_CREAT | O_RDWR,
 					S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP);
 		else
-			fdout = open(shell->outf, O_RDWR | O_CREAT,
+			fdout = open(shell->outf, O_RDWR | O_CREAT | O_TRUNC,
 					S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP);
 	}
 	else

@@ -53,7 +53,7 @@ int interactive(char **envp)
 		add_history(line);
 		space_handler(&line);
 		token_list=lexer(&shell.env,line);
-		if (!is_valid(token_list, &shell) || !token_list)   
+		if (!is_valid(token_list, &shell) || !token_list)
 			continue ;
 		// ft_lst_str_print(*token_list);
 		parser(&token_list, &shell);

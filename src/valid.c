@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/27 18:29:42 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/27 19:17:42 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int		is_valid(t_list *token_lst, t_minishell *shell)
 	if (is_valid_first_token(tmp, shell))
 		return (0);
 	while (tmp)
-	{	
+	{
 		token = tmp->content;
 		if (is_redirection_or_pipe(token[0]) && ft_strlen(token) <= 2)
 		{
@@ -115,7 +115,7 @@ int		is_valid(t_list *token_lst, t_minishell *shell)
 					|| !is_valid_redir(token, next_token) \
 					|| !is_valid_folder(token)))
 			{
-				ft_exit_status(258, shell);
+				ft_exit_status(2, shell);
 				return (0);
 			}
 		}

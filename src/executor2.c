@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:06:29 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/26 23:58:25 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/27 19:23:38 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	ft_is_builtin(int i, t_minishell *shell)
 		return (0);
 	if (ft_strlen(cmd) == 2
 		&& !ft_strncmp(cmd, "cd", 2))
-	{	
+	{
 		cd(i, shell);
 		return (1);
 	}
@@ -73,7 +73,5 @@ int	ft_is_builtin(int i, t_minishell *shell)
 		unset(i, shell);
 		return (1);
 	}
-
 	return (0);
-
 }

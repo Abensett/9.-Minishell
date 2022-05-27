@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 23:49:14 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/26 15:05:12 by shamizi          ###   ########.fr       */
+/*   Updated: 2022/05/27 20:10:13 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*get_env(t_env_list **env, char *key)
 				&& !ft_strncmp(key, tmp->key, ft_strlen(key)))
 			return (tmp->value);
 		tmp = tmp->next;
-	}	
+	}
 	return (NULL);
 }
 

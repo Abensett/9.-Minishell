@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 08:18:39 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/27 04:17:21 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/27 20:37:06 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,9 @@ t_simple_command	*fill_cmds(t_list *token_list, t_simple_command *cmds,
 
 	i = 0;
 	j = 0;
-	ft_lst_str_print(*token_list);
-	while (token_list)
+	// ft_lst_str_print(*token_list);
+	while (token_list && ft_strncmp(token_list->content, ">", 1)
+			&& ft_strncmp(token_list->content, "<", 1))
 	{
 		if (!ft_strncmp(token_list->content, "|",
 				ft_strlen(token_list->content)))

@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/27 17:55:53 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/27 20:28:44 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ void	get_outfile(t_list *token_list, t_minishell *shell)
 				shell->append = 1;
 			if (tmp->next)
 				shell->outf = ft_strdup(tmp->next->content);
-			token_list = token_list->next;
 		}
 		tmp = tmp->next;
 	}
