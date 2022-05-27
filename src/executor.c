@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:06:29 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/26 16:59:23 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/27 18:19:56 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static void	reinit_fd_and_handle_g_exit_status(t_exec *exec, t_minishell *shell)
 	while (wait(NULL)>0); // waits for all children process
 	free(tmp);
 
+
 }
 
 /* copie stdin stdout */
@@ -70,7 +71,6 @@ int	store_fd(t_minishell *shell, t_exec *exec)
 			close(exec->tmpin);
 			close(exec->tmpout);
 		}
-		// printf("fdin=%d\n",g_exit_status);
 	}
 	else
 		fdin = dup(exec->tmpin);
@@ -106,11 +106,12 @@ void	executor(t_minishell *shell)
 
 	i = -1;
 	ft_signaux("heredoc");
+	// printf("cmd=%s %d\n", shell->cmds[0].av[0],shell->number_cmd);
 	exec.fdin = store_fd(shell, &exec);
 	if (exec.fdin == -1 || ft_is_builtin(shell->number_cmd, shell)) // stop heredo and exec 1 buiiltin export, etc
 		return;
 	ft_signaux("command");
-	while (shell->number_cmd >= ++i)
+	while (shell->number_cmd >= ++i && shell->cmds[0].av[0] != NULL)
 	{
 		dup2(exec.fdin, 0);
 		close(exec.fdin);

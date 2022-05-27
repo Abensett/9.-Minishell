@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 08:18:39 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/16 21:47:30 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/27 04:17:21 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ t_simple_command	*pipe_separation(t_list **token_list, t_minishell *shell)
 	t_list				*tmp;
 
 	tmp = *token_list;
-	if (ft_strncmp(tmp->content, "<", 1) == 0)
-		tmp = tmp->next->next;
 	cmds = malloc(sizeof(t_simple_command) * (cmd_counter("|", tmp) + 2));
 	cmds[0].av = malloc(sizeof(char *) * (args_counter(tmp) + 1));
 	cmds = fill_cmds(tmp, cmds, shell);
@@ -77,10 +75,11 @@ t_simple_command	*fill_cmds(t_list *token_list, t_simple_command *cmds,
 
 	i = 0;
 	j = 0;
-	while (token_list && ft_strncmp(token_list->content, ">", 1) != 0)
+	ft_lst_str_print(*token_list);
+	while (token_list)
 	{
-		if (ft_strncmp(token_list->content, "|",
-				ft_strlen(token_list->content)) == 0)
+		if (!ft_strncmp(token_list->content, "|",
+				ft_strlen(token_list->content)))
 		{
 			i++;
 			cmds[i].av = malloc(sizeof(char *)

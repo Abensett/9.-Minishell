@@ -53,13 +53,14 @@ int interactive(char **envp)
 		add_history(line);
 		space_handler(&line);
 		token_list=lexer(&shell.env,line);
-		if (!is_valid(token_list) || !token_list)    // evite le segfault de la chaine vide
+		if (!is_valid(token_list, &shell) || !token_list)   
 			continue ;
+		// ft_lst_str_print(*token_list);
 		parser(&token_list, &shell);
 		if (ft_exit(&shell, line, token_list))
 			continue ;
 		executor(&shell);
-		ft_free(&shell, line, token_list);
+		// ft_free(&shell, line, token_list);
 	}
 	return (0);
 }

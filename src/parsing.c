@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/12 02:56:36 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/27 17:55:53 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ static void	delimit_heredoc(t_list **token_list, t_minishell *shell)
 		ret = (*token_list)->next;
 		shell->heredoc = ft_strdup((*token_list)->next->content);
 		free(*token_list);
-		*token_list = ret;
+		if (ret->next)
+			*token_list = ret->next;
+		else
+			*token_list = NULL;
 	}
 	else if (ft_strncmp("<<", (*token_list)->next->content,
 			ft_strlen((*token_list)->next->content)) == 0
@@ -68,7 +71,8 @@ void	get_infile(t_list *token_list, t_minishell *shell)
 			return ;
 		if (ft_strncmp(tmp->content, "<", ft_strlen(tmp->content)) == 0
 			&& ft_strlen(tmp->content) == ft_strlen("<"))
-			shell->inf = ft_strdup(tmp->content);
+			if (tmp->next)
+				shell->inf = ft_strdup(tmp->next->content);
 		tmp = tmp->next;
 	}
 }
@@ -88,6 +92,7 @@ void	get_outfile(t_list *token_list, t_minishell *shell)
 				shell->append = 1;
 			if (tmp->next)
 				shell->outf = ft_strdup(tmp->next->content);
+			token_list = token_list->next;
 		}
 		tmp = tmp->next;
 	}

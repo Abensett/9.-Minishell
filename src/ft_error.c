@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/23 17:03:52 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/27 00:44:33 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,14 @@ void	ft_error(int i, char *str)
 void	ft_exit_status(int i, t_minishell *shell)
 {
 	char	*g_exit_status_env;
+	char	*tmp;
 
- 
-	g_exit_status_env = ft_strjoin("?=",ft_itoa(g_exit_status)); // corriger ft_itoa
+	tmp = ft_itoa(g_exit_status);
+	g_exit_status_env = ft_strjoin("?=", tmp);
 	g_exit_status = i;
 	unset_env(shell, "?");
 	set_env(shell, g_exit_status_env);
 	free(g_exit_status_env);
+	free(tmp);
 }
 

@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 16:54:28 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/16 23:31:11 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/27 03:44:18 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	non_interactive_mode(char **array, char **env)
   }
   space_handler(&line);
   token_list=lexer(&shell.env,line);
-  if (!is_valid(token_list))
+  if (!is_valid(token_list, &shell))
      exit(2);
   parser(&token_list, &shell);
   executor(&shell);

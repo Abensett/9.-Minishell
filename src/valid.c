@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/25 15:33:38 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/27 18:29:42 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,26 +68,56 @@ static int	is_valid_folder(char *token)
 	}
 	return (1);
 }
+
+static int	is_valid_first_token(t_list *tmp, t_minishell *shell)
+{
+	if (!ft_strncmp(tmp->content, "|", 1))
+	{
+		ft_putendl_fd("minishell : invalid syntax", 2);
+		ft_exit_status(258, shell);
+		return (1);
+	}
+	if (ft_strlen(tmp->content) == 1 && !ft_strncmp(tmp->content, ">",1)
+		&& tmp->next && !tmp->next->next)
+	{
+		open(tmp->next->content, O_RDWR | O_CREAT,
+					S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP);
+		return (1);
+	}
+	if (ft_strlen(tmp->content) == 2 && !ft_strncmp(tmp->content, ">>",2)
+		&& tmp->next && !tmp->next->next)
+	{
+		open(tmp->next->content, O_RDWR | O_CREAT,
+					S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP);
+		return (1);
+	}
+	return (0);
+}
 /*check if after < or pipe is  a readable file, or if empty arg*/
-int		is_valid(t_list *token_lst)
+int		is_valid(t_list *token_lst, t_minishell *shell)
 {
 	char	*token;
 	char	*next_token;
 	t_list	*tmp;
 
 	tmp = token_lst;
+	if (is_valid_first_token(tmp, shell))
+		return (0);
 	while (tmp)
-	{
+	{	
 		token = tmp->content;
-		if (is_redirection_or_pipe(token[0]) && ft_strlen(token) == 1)
+		if (is_redirection_or_pipe(token[0]) && ft_strlen(token) <= 2)
 		{
 			next_token = 0;
 			if (tmp->next)
 				next_token = tmp->next->content;
-			if (!is_valid_operator(next_token) \
+			if ((!is_valid_operator(next_token) \
 					|| !is_valid_redir(token, next_token) \
-					|| !is_valid_folder(token))
+					|| !is_valid_folder(token)))
+			{
+				ft_exit_status(258, shell);
 				return (0);
+			}
 		}
 		tmp = tmp->next;
 	}

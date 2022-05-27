@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:24:25 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/25 23:59:36 by shamizi          ###   ########.fr       */
+/*   Updated: 2022/05/27 00:54:19 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ typedef struct s_minishell
 	char				*inf;
 	char				*outf;
 	char				*heredoc;
+	int					redirin;
 	int					append;
 	t_simple_command	*cmds;
 	t_env_list			*env;
@@ -78,6 +79,7 @@ typedef struct s_minishell
 /*The space handling*/
 void				space_handler(char **line);
 int					is_redirection_or_pipe(char c);
+int					is_doubled_redirection_or_pipe(char *c);
 
 /*The quotes handling*/
 void				quote_remove(t_env_list **env, char **line);
@@ -94,7 +96,7 @@ void				type_quote(char *quote, char c);
 
 //////////////////////////  PARSING  ////////////////////////////////
 /*The valid.c*/
-int					is_valid(t_list *token_list);
+int					is_valid(t_list *token_list, t_minishell	*shell);
 
 /*The parsing utils*/
 void				parser(t_list **token_list, t_minishell *shell);
@@ -114,7 +116,7 @@ void				executor(t_minishell *shell);
 
 /* The executor2.c*/
 int					ft_is_builtin(int i, t_minishell *shell);
-void			execution(int i, t_minishell *shell, t_exec *exec);
+void				execution(int i, t_minishell *shell, t_exec *exec);
 
 /*The heredoc.*/
 int					heredoc(t_minishell *shell);
@@ -148,6 +150,7 @@ int					ft_exit(t_minishell *shell, char *line, t_list *token_list);
 void				ft_error(int i, char *str);
 void				ft_exit_status(int i, t_minishell *shell);
 void				ft_free(t_minishell *shell, char *mine, t_list *token_list);
+
 /* The non interactive */
 void				non_interactive_mode(char **array, char **env);
 int					usage(void);
