@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:21:02 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/26 23:22:02 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/29 20:13:37 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	free_minishell(t_minishell *shell)
 	//free(shell);
 }
 
+
 int	ft_exit(t_minishell *shell, char *line, t_list *token_list)
 {
 	if (!line)
@@ -87,22 +88,31 @@ int	ft_exit(t_minishell *shell, char *line, t_list *token_list)
 		free_minishell(shell);
 		exit(g_exit_status);
 	}
-	if (ft_strlen(shell->cmds[0].av[0]) == 4
+	if ( shell->cmds && ft_strlen(shell->cmds[0].av[0]) == 4
 			&& !ft_strncmp(shell->cmds[0].av[0], "exit", 4))
 	{
-		if (shell->cmds->nb_args > 2)
+		if (shell->cmds[0].av[1])
+		{
+			if(ft_isstr_num(shell->cmds[0].av[1]))
+				g_exit_status = ft_atoi(shell->cmds[0].av[1]);
+			else
+				ft_exit_status(255, shell);
+		}
+		if (shell->cmds->nb_args > 2 && ft_isstr_num(shell->cmds[0].av[1]))
 		{
 			ft_putendl_fd("exit", 2);
 			ft_putendl_fd("minishell: exit: too many arguments", 2);
-			return(2);
+			ft_exit_status(1, shell);
+			return(1);
 		}
-		if (shell->cmds[0].av[1])
-			g_exit_status = ft_atoi(shell->cmds[0].av[1]);
-		rl_clear_history();
-		free_minishell(shell);
-		free(line);
-		ft_lstclear(&token_list, free);
+		ft_free(shell, line, token_list);
+		// rl_clear_history();
+		// free_minishell(shell);
+		// free(line);
+		// ft_lstclear(&token_list, free);
 		ft_putendl_fd("exit", 2);
+		if(g_exit_status > 255)
+			ft_exit_status(g_exit_status % 256, shell);
 		exit(g_exit_status);
 	}
 	return (0);
@@ -129,8 +139,11 @@ void	free_minishell2(t_minishell *shell)
 //		free_env(shell->env);
 	//free(shell);
 }
+
+
 void	ft_free(t_minishell *shell, char *line, t_list *token_list)
 {
+	rl_clear_history();
 	if (!line)
 		free_minishell(shell);
 	else

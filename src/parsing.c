@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/27 20:28:44 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/29 18:09:43 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ static void	delimit_heredoc(t_list **token_list, t_minishell *shell)
 }
 
 /* store path infile */
-void	get_infile(t_list *token_list, t_minishell *shell)
+void	get_infile(t_list **token_list, t_minishell *shell)
 {
 	t_list	*tmp;
 
-	tmp = token_list;
+	tmp = *token_list;
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->content, "<<", ft_strlen(tmp->content)) == 0
@@ -72,7 +72,13 @@ void	get_infile(t_list *token_list, t_minishell *shell)
 		if (ft_strncmp(tmp->content, "<", ft_strlen(tmp->content)) == 0
 			&& ft_strlen(tmp->content) == ft_strlen("<"))
 			if (tmp->next)
+			{
 				shell->inf = ft_strdup(tmp->next->content);
+				if((*token_list)->next->next &&
+					!ft_strncmp((*token_list)->content, "<", ft_strlen(tmp->content)))
+					*token_list = (*token_list)->next->next;
+				// printf("tokenlist %s \n", (char*)(*token_list)->content);
+			}
 		tmp = tmp->next;
 	}
 }
@@ -101,6 +107,8 @@ void	parser(t_list **token_list, t_minishell *shell)
 {
 	delimit_heredoc(token_list, shell);
 	get_outfile(*token_list, shell);
-	get_infile(*token_list, shell);
+	get_infile(token_list, shell);
+	// printf("tokenlist %s \n", (char*)(*token_list)->content);
+
 	shell->cmds = pipe_separation(token_list, shell);
 }
