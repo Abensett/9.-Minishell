@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 23:49:14 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/24 18:53:15 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/30 19:57:19 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static char	*fill_lines(char *oldlines, char *tmp, char *lines)
 
 /* if delimit !=eof
 save lines in oldlines
-add tmp to lines 
+add tmp to lines
 */
 static char	*concatenate(char *tmp, char *delimit, char *lines, char *oldlines,
 						t_minishell *shell)

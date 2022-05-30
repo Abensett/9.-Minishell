@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/26 15:54:28 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/30 19:52:26 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,22 @@ static char	find_first_quote(char *line)
 	return (quote);
 }
 
+static int	is_quoted_redirection(char *line)
+{
+	if (!ft_strncmp(line, "'<'",ft_strlen(line))
+		|| !ft_strncmp(line, "'>'",ft_strlen(line))
+		|| !ft_strncmp(line, "'|'",ft_strlen(line))
+		|| !ft_strncmp(line, "\"<\"",ft_strlen(line))
+		|| !ft_strncmp(line, "\">\"",ft_strlen(line))
+		|| !ft_strncmp(line, "\"|\"",ft_strlen(line))
+		|| !ft_strncmp(line, "\">>\"",ft_strlen(line))
+		|| !ft_strncmp(line, "\">>\"",ft_strlen(line))
+		|| !ft_strncmp(line, "\"<<\"",ft_strlen(line))
+		|| !ft_strncmp(line, "\">>\"",ft_strlen(line)))
+		return (1);
+	return (0);
+}
+
 /*remove quote and expand what's not between ' ' */
 void	quote_remove(t_env_list **env, char **line)
 {
@@ -64,6 +80,8 @@ void	quote_remove(t_env_list **env, char **line)
 	look_for_quote = 0;
 	while ((*line)[++i])
 	{
+		if (is_quoted_redirection((*line)))
+			continue;
 		if (!look_for_quote)
 			quote = find_first_quote(&((*line)[i]));
 		if (quote != '\'' && (*line)[i] == '$'
@@ -75,6 +93,7 @@ void	quote_remove(t_env_list **env, char **line)
 			look_for_quote ^= 1;
 		}
 	}
+	printf("line = %s \n", *line);
 }
 
 /*return error if quote not closed*/

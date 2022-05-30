@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/29 18:09:43 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/30 20:05:13 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	tokens_counter(t_list *token_lst)
 	return (i);
 }
 
-/* skip << and store delimiter  */
+/* skip << and store delimiter in shell->heredoc / if next go next command */
 static void	delimit_heredoc(t_list **token_list, t_minishell *shell)
 {
 	t_list	*ret;
@@ -58,7 +58,7 @@ static void	delimit_heredoc(t_list **token_list, t_minishell *shell)
 	}
 }
 
-/* store path infile */
+/* store path infile if <  */
 void	get_infile(t_list **token_list, t_minishell *shell)
 {
 	t_list	*tmp;
@@ -77,13 +77,12 @@ void	get_infile(t_list **token_list, t_minishell *shell)
 				if((*token_list)->next->next &&
 					!ft_strncmp((*token_list)->content, "<", ft_strlen(tmp->content)))
 					*token_list = (*token_list)->next->next;
-				// printf("tokenlist %s \n", (char*)(*token_list)->content);
 			}
 		tmp = tmp->next;
 	}
 }
 
-/* store path outfile, append  if */
+/* store path outfile, append =1 if >>*/
 void	get_outfile(t_list *token_list, t_minishell *shell)
 {
 	t_list	*tmp;
@@ -94,6 +93,14 @@ void	get_outfile(t_list *token_list, t_minishell *shell)
 	{
 		if (!ft_strncmp(tmp->content, ">>", ft_strlen(tmp->content)))
 		{
+			if(!ft_strncmp(tmp->content, ">", ft_strlen(tmp->content))
+				&& tmp->next)
+				close(open(shell->outf, O_RDWR | O_CREAT | O_TRUNC,
+					S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP));
+			if(!ft_strncmp(tmp->content, ">>", ft_strlen(tmp->content))
+				&& tmp->next)
+				close(open(shell->outf, O_RDWR | O_CREAT | O_APPEND,
+					S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP));
 			if (ft_strncmp(tmp->content, ">", ft_strlen(tmp->content)))
 				shell->append = 1;
 			if (tmp->next)
@@ -105,10 +112,21 @@ void	get_outfile(t_list *token_list, t_minishell *shell)
 
 void	parser(t_list **token_list, t_minishell *shell)
 {
+	int	i;
+	int j;
+
 	delimit_heredoc(token_list, shell);
 	get_outfile(*token_list, shell);
 	get_infile(token_list, shell);
 	// printf("tokenlist %s \n", (char*)(*token_list)->content);
-
 	shell->cmds = pipe_separation(token_list, shell);
+	i = 0;
+	j = 0;
+	printf("%d %s\n", shell->number_cmd, shell->cmds[i].av[1]);
+	while(i <= shell->number_cmd)
+	{
+		while (shell->cmds[i].av[j])
+			quote_expansion_heredoc(&shell->env, &shell->cmds[i].av[j++]);
+		i++;
+	}
 }

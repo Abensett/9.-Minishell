@@ -27,6 +27,13 @@ void   ft_prompt(t_minishell *shell)
 	free(pwd);
 }
 
+void	ft_init_shell(t_minishell *shell, char **envp)
+{
+	shell->env = init_env(envp);
+	shell->envp = set_envp(shell->env);
+	ft_exit_status(g_exit_status, shell);
+	// printf("%d \n",g_exit_status);
+}
 
 int interactive(char **envp)
 {
@@ -34,9 +41,7 @@ int interactive(char **envp)
 	char          *line;
 	t_list        *token_list;
 
-	shell.env = init_env(envp);
-	shell.envp = set_envp(shell.env);
-	set_env(&shell, "?=0");
+	ft_init_shell(&shell, envp);
 	while(1)
 	{
 		ft_signaux("interactive");
@@ -53,11 +58,11 @@ int interactive(char **envp)
 		add_history(line);
 		space_handler(&line);
 		token_list=lexer(&shell.env,line);
-		// printf("After tokeniser :\n");
+		// printf("After tokeniser :\n"%d:\n");
 		// ft_lst_str_print(*token_list);
 		if (!is_valid(token_list, &shell) || !token_list)
 			continue ;
-		// printf("After is_valid :\n");
+		// printf("After is_valid %d:\n", g_exit_status);
 		// ft_lst_str_print(*token_list);
 		parser(&token_list, &shell);
 		// printf("After parsing :\n");

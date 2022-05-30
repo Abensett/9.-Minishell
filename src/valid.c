@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/27 19:17:42 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/30 20:17:17 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@ static int	is_valid_operator(char *next_token)
 {
 	char	*tmp;
 
-	if (!next_token || is_redirection_or_pipe(next_token[0]))
+	if ((!next_token || is_redirection_or_pipe(next_token[0]))
+		&& ft_strlen(next_token) == 1)
 	{
+		printf("caca\n");
 		tmp = ft_strdup("bash: syntax error near unexpected token `'");
 		if (!next_token)
 			ft_str_add(&tmp, ft_strlen(tmp) - 1, "newline");
@@ -71,20 +73,23 @@ static int	is_valid_folder(char *token)
 
 static int	is_valid_first_token(t_list *tmp, t_minishell *shell)
 {
-	if (!ft_strncmp(tmp->content, "|", 1))
+	int len;
+
+	len = ft_strlen(tmp->content);
+	if (!ft_strncmp(tmp->content, "|", len))
 	{
 		ft_putendl_fd("minishell : invalid syntax", 2);
 		ft_exit_status(258, shell);
 		return (1);
 	}
-	if (ft_strlen(tmp->content) == 1 && !ft_strncmp(tmp->content, ">",1)
+	if (len == 1 && !ft_strncmp(tmp->content, ">",1)
 		&& tmp->next && !tmp->next->next)
 	{
 		open(tmp->next->content, O_RDWR | O_CREAT,
 					S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP);
 		return (1);
 	}
-	if (ft_strlen(tmp->content) == 2 && !ft_strncmp(tmp->content, ">>",2)
+	if (len == 2 && !ft_strncmp(tmp->content, ">>",2)
 		&& tmp->next && !tmp->next->next)
 	{
 		open(tmp->next->content, O_RDWR | O_CREAT,

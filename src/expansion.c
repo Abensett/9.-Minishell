@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/26 15:49:24 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/30 16:45:40 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static char	*find_key(char *str)
 
 	i = -1;
 	while (str[++i])
-		if (str[i] == '"' || str[i] == ' ' || str[i] == '\'')
+		if (str[i] == '"' || str[i] == ' ' || str[i] == '\''
+			|| str[i] == '$')
 			break ;
 	key = ft_substr(str, 0, i);
 	return (key);

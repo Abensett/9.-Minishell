@@ -26,7 +26,7 @@ DIROBJ			= objs/
 
 CC				= gcc
 
-CFLAGS 			=  -Wall -Wextra -Werror -g
+CFLAGS 			=  -Wall -Wextra -Werror -g3
 
 INCLUDES 		= -I ./includes -I /opt/homebrew/opt/readline/include
 
@@ -68,8 +68,10 @@ DIROBJS	= $(addprefix $(DIROBJ), $(OBJ))
 #                             MAKEFILE'S RULES                                 #
 # **************************************************************************** #
 
-
 all: header	$(NAME)
+
+leaks : all
+		valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --suppressions=.ignore_readline --track-origins=yes ./minishell
 
 $(DIROBJ)%.o:$(DIRSRC)%.c
 			@mkdir -p $(DIROBJ)

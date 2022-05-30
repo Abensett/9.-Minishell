@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:21:02 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/27 21:08:51 by shamizi          ###   ########.fr       */
+/*   Updated: 2022/05/30 18:01:23 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	export(int i, t_minishell *shell)
 int	unset(int i, t_minishell *shell)
 {
 	int	j;
-	
+
 	j = 1;
 	if (!shell->cmds[i].av[1])
 	{
@@ -134,6 +134,7 @@ int	env(t_minishell *shell)
 	t_env_list		*tmp;
 
 	tmp = shell->env;
+	ft_exit_status(g_exit_status, shell);
 	while (tmp)
 	{
 		printf("%s\n", tmp->all);

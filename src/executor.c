@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:06:29 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/27 20:37:52 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/30 19:34:55 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,12 @@ static void	reinit_fd_and_handle_g_exit_status(t_exec *exec, t_minishell *shell)
 			g_exit_status = WEXITSTATUS(exec->tmpret);
 		else if (WIFSIGNALED(exec->pid))
 			g_exit_status = WTERMSIG(exec->tmpret);
+
 		tmp = ft_itoa(g_exit_status);
 		g_exit_status_env = ft_strjoin("?=",tmp);
 		unset_env(shell, "?");
 		set_env(shell, g_exit_status_env);
-		g_exit_status = 0;
+		ft_exit_status(g_exit_status, shell);
 		free(g_exit_status_env);
 		free(tmp);
 
@@ -104,7 +105,6 @@ void	executor(t_minishell *shell)
 	t_exec		exec;
 
 	i = -1;
-	ft_signaux("heredoc");
 	// printf("cmd=%s %d\n", shell->cmds[0].av[0],shell->number_cmd);
 	exec.fdin = store_fd(shell, &exec);
 	if (exec.fdin == -1 || ft_is_builtin(shell->number_cmd, shell)) // stop heredo and exec 1 buiiltin export, etc
