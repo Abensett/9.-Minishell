@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:24:25 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/27 00:54:19 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/30 22:19:02 by shamizi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ extern int	g_exit_status;
 typedef struct s_simple_command
 {
 	int		nb_args;
+	int		nb_cmds;
 	char	**av;
 }			t_simple_command;
 

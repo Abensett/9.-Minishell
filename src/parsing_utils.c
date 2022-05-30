@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 08:18:39 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/30 20:20:01 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/30 22:21:03 by shamizi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,11 @@ t_simple_command	*pipe_separation(t_list **token_list, t_minishell *shell)
 
 	tmp = *token_list;
 	cmds = malloc(sizeof(t_simple_command) * (cmd_counter("|", tmp) + 2));
-	cmds[0].av = malloc(sizeof(char *) * (args_counter(tmp) + 1));
+	cmds->nb_cmds = 0;
+	cmds->nb_cmds = cmd_counter("|", tmp) + 1;
+	printf("commande counter : %d\n", cmd_counter("|", tmp));
+
+	cmds[0].av = malloc(sizeof(char *) * (args_counter(tmp) + 1)); //on ecrase cmds 0 ?
 	cmds = fill_cmds(tmp, cmds, shell);
 	return (cmds);
 }
@@ -66,8 +70,8 @@ int	args_counter(t_list *token_list)
 	return (count);
 }
 
-/*fill cmds with token list */
-t_simple_command	*fill_cmds(t_list *token_list, t_simple_command *cmds,
+/*fill cmds with token list | j'ai changer le nom token_list en tolist pour la norme */
+t_simple_command	*fill_cmds(t_list *tk, t_simple_command *cmds,
 					t_minishell *shell)
 {
 	int	i;
@@ -75,21 +79,21 @@ t_simple_command	*fill_cmds(t_list *token_list, t_simple_command *cmds,
 
 	i = 0;
 	j = 0;
-	while (token_list && ft_strncmp(token_list->content, ">", ft_strlen(token_list->content))
-			&& ft_strncmp(token_list->content, "<", ft_strlen(token_list->content)))
+	while (tk && ft_strncmp(tk->content, ">", ft_strlen(tk->content))
+		&& ft_strncmp(tk->content, "<", ft_strlen(tk->content)))
 	{
-		if (!ft_strncmp(token_list->content, "|",ft_strlen(token_list->content)))
+		if (!ft_strncmp(tk->content, "|", ft_strlen(tk->content)))
 		{
 			i++;
 			cmds[i].av = malloc(sizeof(char *)
-					* (args_counter(token_list->next) + 1));
+					* (args_counter(tk->next) + 1));
 			j = 0;
-			token_list = token_list->next;
+			tk = tk->next;
 		}
-		cmds[i].av[j] = ft_strdup(token_list->content);
+		cmds[i].av[j] = ft_strdup(tk->content);
 		cmds[i].nb_args = ++j;
 		cmds[i].av[j] = 0;
-		token_list = token_list->next;
+		tk = tk->next;
 	}
 	shell->number_cmd = i;
 	return (cmds);

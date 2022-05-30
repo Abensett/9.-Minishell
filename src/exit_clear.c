@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:21:02 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/30 17:31:01 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/30 22:42:58 by shamizi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,35 +122,42 @@ int	ft_exit(t_minishell *shell, char *line, t_list *token_list)
 
 void	free_minishell2(t_minishell *shell)
 {
-	//	if(shell->prompt)
-	//		free(shell->prompt);
-	//if(shell->envp)
-	//	freestrings(shell->envp);
-	//	if(shell->paths)
-	//		freestrings(shell->paths);
-//	if(shell->inf)
-//		free(shell->inf);
-//	if(shell->outf)
-//		free(shell->outf);
-//	if(shell->heredoc)
-//		free(shell->heredoc);
-	if(shell->cmds)
+	int i = 0;
+	t_env_list *tmp;
+
+	tmp = shell->env;
+	if(shell->cmds->nb_cmds > 1)
+	{
+		while(i < shell->cmds->nb_cmds)
+			freestrings(shell->cmds[i++].av);
+		free(shell->cmds);
+	}
+	else
 		freecmds(shell->cmds);
-//	if (shell->env)
-//		free_env(shell->env);
-	//free(shell);
+	i = 0;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	/*int j = 0;
+	while (j < i)
+	{
+	}
+	free(shell->env);*/
+
 }
 
 
 void	ft_free(t_minishell *shell, char *line, t_list *token_list)
 {
-	rl_clear_history();
+	//rl_clear_history();
 	if (!line)
-		free_minishell(shell);
+		printf("je tente pas de free\n");
 	else
 	{
-		if (shell->cmds[0].av[1])
-			g_exit_status = ft_atoi(shell->cmds[0].av[1]);
+		//if (shell->cmds[0].av[1])
+		//	g_exit_status = ft_atoi(shell->cmds[0].av[1]);
 		free_minishell2(shell);
 		free(line);
 		ft_lstclear(&token_list, free);

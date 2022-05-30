@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/30 20:17:17 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/30 21:08:20 by shamizi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static int	is_valid_folder(char *token)
 
 static int	is_valid_first_token(t_list *tmp, t_minishell *shell)
 {
-	int len;
+	int	len;
 
 	len = ft_strlen(tmp->content);
 	if (!ft_strncmp(tmp->content, "|", len))
@@ -82,24 +82,28 @@ static int	is_valid_first_token(t_list *tmp, t_minishell *shell)
 		ft_exit_status(258, shell);
 		return (1);
 	}
-	if (len == 1 && !ft_strncmp(tmp->content, ">",1)
+	if (len == 1 && !ft_strncmp(tmp->content, ">", 1)
 		&& tmp->next && !tmp->next->next)
 	{
 		open(tmp->next->content, O_RDWR | O_CREAT,
-					S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP);
+			S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP);
 		return (1);
 	}
-	if (len == 2 && !ft_strncmp(tmp->content, ">>",2)
+	if (len == 2 && !ft_strncmp(tmp->content, ">>", 2)
 		&& tmp->next && !tmp->next->next)
 	{
 		open(tmp->next->content, O_RDWR | O_CREAT,
-					S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP);
+			S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP);
 		return (1);
 	}
 	return (0);
 }
 /*check if after < or pipe is  a readable file, or if empty arg*/
-int		is_valid(t_list *token_lst, t_minishell *shell)
+/*int	is_valid2(t_list *tmp, t_minishell *shell)
+{
+
+}*/
+int	is_valid(t_list *token_lst, t_minishell *shell)
 {
 	char	*token;
 	char	*next_token;
@@ -110,6 +114,12 @@ int		is_valid(t_list *token_lst, t_minishell *shell)
 		return (0);
 	while (tmp)
 	{
+	//	if(!is_valid2(tmp, shell))
+	//		return (0);
+		/*sa commence ici
+	
+		  sa fini la
+		  */
 		token = tmp->content;
 		if (is_redirection_or_pipe(token[0]) && ft_strlen(token) <= 2)
 		{

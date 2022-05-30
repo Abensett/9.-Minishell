@@ -6,12 +6,11 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:21:02 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/30 19:02:00 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/30 20:45:22 by shamizi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 void	ft_signals(int sig)
 {
@@ -54,7 +53,7 @@ void	ft_signals_here_doc(int sig)
 		return ;
 	}
 	else if (sig == SIGQUIT)
-	 	return ;
+		return ;
 }
 
 void	ft_signaux(char *mode)
@@ -66,21 +65,18 @@ void	ft_signaux(char *mode)
 	ctrl_slash.sa_flags = 0;
 	ft_memset(&ctrl_c, 0, sizeof(ctrl_c));
 	ft_memset(&ctrl_slash, 0, sizeof(ctrl_slash));
-	if (!ft_strncmp(mode,"heredoc",8))
+	if (!ft_strncmp(mode, "heredoc", 8))
 	{
-		// printf("hehe\n");
 		ctrl_c.sa_handler = &ft_signals_here_doc;
 		ctrl_slash.sa_handler = SIG_IGN;
 	}
-	else if (!ft_strncmp(mode,"command",8))
+	else if (!ft_strncmp(mode, "command", 8))
 	{
-		// printf("cmd\n");
 		ctrl_c.sa_handler = &ft_signals_command;
 		ctrl_slash.sa_handler = &ft_signals_command;
 	}
-	else if (!ft_strncmp(mode,"interactive",12))
+	else if (!ft_strncmp(mode, "interactive", 12))
 	{
-		// printf("interactive\n");
 		ctrl_c.sa_handler = &ft_signals;
 		ctrl_slash.sa_handler = SIG_IGN;
 	}

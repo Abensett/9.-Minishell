@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/30 19:52:26 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/30 20:46:35 by shamizi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,16 @@ static char	find_first_quote(char *line)
 
 static int	is_quoted_redirection(char *line)
 {
-	if (!ft_strncmp(line, "'<'",ft_strlen(line))
-		|| !ft_strncmp(line, "'>'",ft_strlen(line))
-		|| !ft_strncmp(line, "'|'",ft_strlen(line))
-		|| !ft_strncmp(line, "\"<\"",ft_strlen(line))
-		|| !ft_strncmp(line, "\">\"",ft_strlen(line))
-		|| !ft_strncmp(line, "\"|\"",ft_strlen(line))
-		|| !ft_strncmp(line, "\">>\"",ft_strlen(line))
-		|| !ft_strncmp(line, "\">>\"",ft_strlen(line))
-		|| !ft_strncmp(line, "\"<<\"",ft_strlen(line))
-		|| !ft_strncmp(line, "\">>\"",ft_strlen(line)))
+	if (!ft_strncmp(line, "'<'", ft_strlen(line))
+		|| !ft_strncmp(line, "'>'", ft_strlen(line))
+		|| !ft_strncmp(line, "'|'", ft_strlen(line))
+		|| !ft_strncmp(line, "\"<\"", ft_strlen(line))
+		|| !ft_strncmp(line, "\">\"", ft_strlen(line))
+		|| !ft_strncmp(line, "\"|\"", ft_strlen(line))
+		|| !ft_strncmp(line, "\">>\"", ft_strlen(line))
+		|| !ft_strncmp(line, "\">>\"", ft_strlen(line))
+		|| !ft_strncmp(line, "\"<<\"", ft_strlen(line))
+		|| !ft_strncmp(line, "\">>\"", ft_strlen(line)))
 		return (1);
 	return (0);
 }
@@ -81,7 +81,7 @@ void	quote_remove(t_env_list **env, char **line)
 	while ((*line)[++i])
 	{
 		if (is_quoted_redirection((*line)))
-			continue;
+			continue ;
 		if (!look_for_quote)
 			quote = find_first_quote(&((*line)[i]));
 		if (quote != '\'' && (*line)[i] == '$'
