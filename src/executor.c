@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:06:29 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/30 21:08:55 by shamizi          ###   ########.fr       */
+/*   Updated: 2022/05/31 14:29:25 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,6 @@ int	store_fd_close(int tmpin, int tmpout)
 	close(tmpout);
 	return (-1);
 }
-		/*{
-			g_exit_status = 1;
-			close(exec->tmpin);
-			close(exec->tmpout);
-			return (-1);
-		}*/
 
 int	store_fd(t_minishell *shell, t_exec *exec)
 {
@@ -71,7 +65,6 @@ int	store_fd(t_minishell *shell, t_exec *exec)
 			return (store_fd_close(exec->tmpin, exec->tmpout));
 		if (fdin == -1)
 		{
-			g_exit_status = 0;
 			close(exec->tmpin);
 			close(exec->tmpout);
 		}
@@ -91,6 +84,7 @@ int	get_out_file(int tmpout, t_minishell *shell)
 
 	if (shell->outf)
 	{
+		// printf("append ? %d  %s\n", shell->append, shell->outf );
 		if (shell->append > 0)
 			fdout = open(shell->outf, O_APPEND | O_CREAT | O_RDWR,
 					S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP);
@@ -118,6 +112,7 @@ void	executor(t_minishell *shell)
 	exec.fdin = store_fd(shell, &exec);
 	if (exec.fdin == -1 || ft_is_builtin(shell->number_cmd, shell)) // stop heredo and exec 1 buiiltin export, etc
 		return ;
+	// printf("\ncmd = %s doc = %s\n", shell->cmds[0].av[0], shell->outf);
 	ft_signaux("command");
 	while (shell->number_cmd >= ++i && shell->cmds[0].av[0] != NULL)
 	{

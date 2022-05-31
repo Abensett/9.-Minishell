@@ -71,7 +71,7 @@ int interactive(char **envp)
 		if (ft_exit(&shell, line, token_list))
 			continue ;
 		executor(&shell);
-		ft_free(&shell, line, token_list);
+		// ft_free(&shell, line, token_list);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:21:02 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/30 22:42:58 by shamizi          ###   ########.fr       */
+/*   Updated: 2022/05/31 13:40:10 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,8 @@ int	ft_exit(t_minishell *shell, char *line, t_list *token_list)
 			ft_exit_status(1, shell);
 			return(1);
 		}
-		ft_free(shell, line, token_list);
+		(void )*token_list;
+		// ft_free(shell, line, token_list);
 		// rl_clear_history();
 		// free_minishell(shell);
 		// free(line);
@@ -126,14 +127,14 @@ void	free_minishell2(t_minishell *shell)
 	t_env_list *tmp;
 
 	tmp = shell->env;
-	if(shell->cmds->nb_cmds > 1)
-	{
-		while(i < shell->cmds->nb_cmds)
-			freestrings(shell->cmds[i++].av);
-		free(shell->cmds);
-	}
-	else
-		freecmds(shell->cmds);
+	// if(shell->cmds->nb_cmds > 1)
+	// {
+	// 	while(i < shell->cmds->nb_cmds)
+	// 		freestrings(shell->cmds[i++].av);
+	// 	free(shell->cmds);
+	// }
+	// else
+	// 	freecmds(shell->cmds);
 	i = 0;
 	while (tmp)
 	{

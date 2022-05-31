@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/30 20:46:35 by shamizi          ###   ########.fr       */
+/*   Updated: 2022/05/31 14:33:50 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ void	quote_remove(t_env_list **env, char **line)
 			look_for_quote ^= 1;
 		}
 	}
-	printf("line = %s \n", *line);
 }
 
 /*return error if quote not closed*/
@@ -113,7 +112,7 @@ int	quote_check(char **line)
 			if (!tmp)
 			{
 				ft_putendl_fd("Unexpected EOF looking for matching '\"'", 2);
-				g_exit_status = 258;
+				g_exit_status = 2;
 				return (1);
 			}
 			else
@@ -136,17 +135,20 @@ void	quote_expansion_heredoc(t_env_list **env, char **line)
 	i = -1;
 	quote = 0;
 	look_for_quote = 0;
-	while ((*line)[++i])
+	if (*line)
 	{
-		if (!look_for_quote)
-			quote = find_first_quote(&((*line)[i]));
-		if (quote != '\'' && (*line)[i] == '$'
-			&& (ft_isalpha((*line)[i + 1]) || (*line)[i + 1] == '?'))
-			expansion(env, line, &i);
-		if (quote && (*line)[i] == quote)
+		while ((*line)[++i])
 		{
-			ft_str_delete(line, i--, 1);
-			look_for_quote ^= 1;
+			if (!look_for_quote)
+				quote = find_first_quote(&((*line)[i]));
+			if (quote != '\'' && (*line)[i] == '$'
+				&& (ft_isalpha((*line)[i + 1]) || (*line)[i + 1] == '?'))
+				expansion(env, line, &i);
+			if (quote && (*line)[i] == quote)
+			{
+				ft_str_delete(line, i--, 1);
+				look_for_quote ^= 1;
+			}
 		}
 	}
 }

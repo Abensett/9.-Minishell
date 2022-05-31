@@ -1,0 +1,17 @@
+total 4448
+-rw-r--r-- 1 abensett 2021_paris       0 May 31 13:10 "
+drwxr-xr-x 6 abensett 2021_paris    4096 May 31 13:10 .
+drwxr-xr-x 9 abensett 2021_paris    4096 May 31 13:10 ..
+-rw-r--r-- 1 abensett 2021_paris       0 May 31 13:05 |
+-rw-r--r-- 1 abensett 2021_paris       1 May 31 13:10 f1
+-rw-r--r-- 1 abensett 2021_paris     984 May 31 13:10 file1
+-rw-r--r-- 1 abensett 2021_paris       3 May 31 13:10 file2
+drwxr-xr-x 2 abensett 2021_paris    4096 May 31 10:18 includes
+-rw-r--r-- 1 abensett 2021_paris    4969 May 31 10:18 liste_tests.txt
+drwxr-xr-x 2 abensett 2021_paris    4096 May 31 13:10 log_tests
+-rw-r--r-- 1 abensett 2021_paris    4272 May 31 10:18 Makefile
+-rwxr-xr-x 1 abensett 2021_paris   22664 May 31 13:08 minishell_tester
+drwxr-xr-x 2 abensett 2021_paris    4096 May 31 13:04 objs
+drwxr-xr-x 2 abensett 2021_paris    4096 May 31 10:18 srcs
+-rwxr-xr-x 1 abensett 2021_paris  780079 May 31 10:18 test
+-rw-r--r-- 1 abensett 2021_paris 3690539 May 31 13:05 test.txt

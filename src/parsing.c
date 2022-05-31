@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/30 20:05:13 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/31 14:46:36 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,21 +112,23 @@ void	get_outfile(t_list *token_list, t_minishell *shell)
 
 void	parser(t_list **token_list, t_minishell *shell)
 {
-	int	i;
-	int j;
+	// int	i;
+	// int j;
 
 	delimit_heredoc(token_list, shell);
 	get_outfile(*token_list, shell);
 	get_infile(token_list, shell);
 	// printf("tokenlist %s \n", (char*)(*token_list)->content);
 	shell->cmds = pipe_separation(token_list, shell);
-	i = 0;
-	j = 0;
-	printf("%d %s\n", shell->number_cmd, shell->cmds[i].av[1]);
-	while(i <= shell->number_cmd)
-	{
-		while (shell->cmds[i].av[j])
-			quote_expansion_heredoc(&shell->env, &shell->cmds[i].av[j++]);
-		i++;
-	}
+// 	i = 0;
+// 	j = 0;
+// 	// printf("%d %s\n", shell->number_cmd, shell->cmds[i].av[1]);
+// 	while(i <= shell->number_cmd)
+// 	{
+// 		while (shell->cmds[i].av[j])
+// 		{
+// 			quote_expansion_heredoc(&shell->env, &shell->cmds[i].av[j++]);
+// 		}
+// 		i++;
+// }
 }

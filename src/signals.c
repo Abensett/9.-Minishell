@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:21:02 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/30 20:45:22 by shamizi          ###   ########.fr       */
+/*   Updated: 2022/05/31 14:24:43 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	ft_signals_command(int sig)
 {
 	if (sig == SIGINT)
 	{
+		ft_putchar_fd('\n', 1);
 		g_exit_status = sig + 128;
 		return ;
 	}

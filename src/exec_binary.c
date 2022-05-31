@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 00:52:39 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/30 17:30:54 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/31 14:28:08 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	exec_binary(int num, t_minishell *shell)
 {
 	int			i;
 
+
+	execve(shell->cmds[num].av[0], shell->cmds[num].av, shell->envp);
 	shell->paths = make_paths(shell->cmds[num].av[0], shell->envp);
 	i = -1;
 	if (!shell->paths)
