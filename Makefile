@@ -57,8 +57,8 @@ SRC_FILES = arglist.c \
 			non_interactive.c \
 			signals.c \
 			minishell.c \
-			exit_clear.c
-
+			exit_clear.c \
+			exit_clear2.c
 OBJ := $(SRC_FILES:.c=.o)
 
 SRC = $(addprefix ${DIRSRC}, $(SRC))
