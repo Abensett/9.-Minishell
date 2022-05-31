@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:21:02 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/30 20:30:44 by shamizi          ###   ########.fr       */
+/*   Updated: 2022/05/31 16:32:18 by shamizi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,37 @@ void	cd_error(char *s1, char *s2, t_minishell *shell)
 	free(tmp3);
 }
 
+void	cd2(char *old, char *new, t_minishell *shell, int i)
+{
+	char	*cwd2;
+	char	*buff;
+	size_t	size;
+
+	buff = 0;
+	size = 0;
+	if (chdir(new) == 0)
+	{
+		cwd2 = getcwd(buff, size);
+		new = ft_strjoin("PWD=", cwd2);
+		if (new && old)
+		{
+			export2(shell, old);
+			export2(shell, new);
+		}
+		free(new);
+		free(cwd2);
+		free(buff);
+	}
+	else
+		cd_error("cd: ", shell->cmds[i].av[1], shell);
+}
+
 void	cd(int i, t_minishell *shell)
 {
 	char	*buff;
 	char	*old;
 	char	*new;
 	char	*cwd;
-	char	*cwd2;
 	size_t	size;
 
 	buff = 0;
@@ -59,20 +83,7 @@ void	cd(int i, t_minishell *shell)
 		new = shell->cmds[i].av[1];
 	cwd = getcwd(buff, size);
 	old = ft_strjoin("OLDPWD=", cwd);
-	if (chdir(new) == 0)
-	{
-		cwd2 = getcwd(buff, size);
-		new = ft_strjoin("PWD=", cwd2);
-		if (new && old)
-		{
-			export2(shell, old);
-			export2(shell, new);
-		}
-		free(new);
-		free(cwd2);
-	}
-	else
-		cd_error("cd: ", shell->cmds[i].av[1], shell);
+	cd2(old, new, shell, i);
 	free(buff);
 	free(old);
 	free(cwd);

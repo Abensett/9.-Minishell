@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exit_clear.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: shamizi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/21 23:21:02 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/31 13:40:10 by abensett         ###   ########.fr       */
+/*   Created: 2022/05/31 17:59:06 by shamizi           #+#    #+#             */
+/*   Updated: 2022/05/31 18:00:27 by shamizi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+//la structure T_env_list = 32 bytes, pile ce que je doit faire disparaitre
+void	free_minishell2(t_minishell *shell);
 void	freestrings(char **tab)
 {
 	int i;
@@ -39,8 +40,8 @@ void	free_env(t_env_list *env)
 {
 	t_env_list *tmp;
 
-	if (!env)
-		return ;
+	//if (!env)
+	//	return ;
 	while (env)
 	{
 		tmp = env->next;
@@ -54,7 +55,7 @@ void	free_env(t_env_list *env)
 			free(env);
 		env = tmp;
 	}
-	free(tmp);
+	free(env);
 }
 
 
@@ -72,8 +73,8 @@ void	free_minishell(t_minishell *shell)
 		free(shell->outf);
 	if(shell->heredoc)
 		free(shell->heredoc);
-	// if(shell->cmds)
-	// 	freecmds(shell->cmds);
+	if(shell->cmds)
+		free_minishell2(shell);
 	if (shell->env)
 		free_env(shell->env);
 	//free(shell);
@@ -107,6 +108,11 @@ int	ft_exit(t_minishell *shell, char *line, t_list *token_list)
 			ft_exit_status(1, shell);
 			return(1);
 		}
+		//ft_free(shell, line, token_list);
+		rl_clear_history();
+		free_minishell(shell);
+		free(line);
+		ft_lstclear(&token_list, free);
 		(void )*token_list;
 		// ft_free(shell, line, token_list);
 		// rl_clear_history();
@@ -114,7 +120,7 @@ int	ft_exit(t_minishell *shell, char *line, t_list *token_list)
 		// free(line);
 		// ft_lstclear(&token_list, free);
 		ft_putendl_fd("exit", 2);
-		ft_exit_status(g_exit_status % 256, shell);
+		//	ft_exit_status(g_exit_status % 256, shell);
 		exit(g_exit_status);
 	}
 	return (0);
@@ -124,31 +130,16 @@ int	ft_exit(t_minishell *shell, char *line, t_list *token_list)
 void	free_minishell2(t_minishell *shell)
 {
 	int i = 0;
-	t_env_list *tmp;
 
-	tmp = shell->env;
-	// if(shell->cmds->nb_cmds > 1)
-	// {
-	// 	while(i < shell->cmds->nb_cmds)
-	// 		freestrings(shell->cmds[i++].av);
-	// 	free(shell->cmds);
-	// }
-	// else
-	// 	freecmds(shell->cmds);
-	i = 0;
-	while (tmp)
+	if(shell->cmds->nb_cmds > 1)
 	{
-		i++;
-		tmp = tmp->next;
+		while(i < shell->cmds->nb_cmds)
+			freestrings(shell->cmds[i++].av);
+		free(shell->cmds);
 	}
-	/*int j = 0;
-	while (j < i)
-	{
-	}
-	free(shell->env);*/
-
+	else
+		freecmds(shell->cmds);
 }
-
 
 void	ft_free(t_minishell *shell, char *line, t_list *token_list)
 {
@@ -157,8 +148,7 @@ void	ft_free(t_minishell *shell, char *line, t_list *token_list)
 		printf("je tente pas de free\n");
 	else
 	{
-		//if (shell->cmds[0].av[1])
-		//	g_exit_status = ft_atoi(shell->cmds[0].av[1]);
+		//unset_env(shell, "?");
 		free_minishell2(shell);
 		free(line);
 		ft_lstclear(&token_list, free);
