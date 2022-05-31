@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 23:49:14 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/30 19:57:19 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/31 16:36:57 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ static char	*fill_lines(char *oldlines, char *tmp, char *lines)
 save lines in oldlines
 add tmp to lines
 */
-static char	*concatenate(char *tmp, char *delimit, char *lines, char *oldlines,
-						t_minishell *shell)
+static char	*concatenate(char *tmp, t_minishell *shell,
+			char *lines, char *oldlines)
 {
-	while ((!tmp || !*tmp) || !is_eof(delimit, tmp))
+	while ((!tmp || !*tmp) || !is_eof(shell->heredoc, tmp))
 	{
 		if (lines != NULL)
 		{
@@ -66,7 +66,7 @@ static char	*concatenate(char *tmp, char *delimit, char *lines, char *oldlines,
 		free(tmp);
 		tmp = readline(">");
 		if (!tmp)
-			break;
+			break ;
 	}
 	return (lines);
 }
@@ -83,11 +83,11 @@ int	heredoc(t_minishell *shell)
 	lines = 0;
 	ft_signaux("heredoc");
 	tmp = readline(">");
-	if(g_exit_status == 128 + SIGINT)
-			return (0);
+	if (g_exit_status == 128 + SIGINT)
+		return (0);
 	if (!tmp)
 		return (0);
-	lines = concatenate(tmp, shell->heredoc, lines, oldlines, shell);
+	lines = concatenate(tmp, shell, lines, oldlines);
 	pipe(pipefd);
 	write(pipefd[1], lines, ft_strlen(lines));
 	close(pipefd[1]);

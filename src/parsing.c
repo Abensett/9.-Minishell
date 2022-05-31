@@ -6,13 +6,13 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/31 14:46:36 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/31 17:04:43 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* return len of *token_list*/
+/* return len of *tkn_list*/
 int	tokens_counter(t_list *token_lst)
 {
 	int	i;
@@ -27,43 +27,40 @@ int	tokens_counter(t_list *token_lst)
 }
 
 /* skip << and store delimiter in shell->heredoc / if next go next command */
-static void	delimit_heredoc(t_list **token_list, t_minishell *shell)
+static void	delimit_heredoc(t_list **tkn_list, t_minishell *shell, t_list *ret)
 {
-	t_list	*ret;
-
-	ret = *token_list;
-	if (tokens_counter(*token_list) < 2)
+	ret = *tkn_list;
+	if (tokens_counter(*tkn_list) < 2)
 		return ;
-	if (ft_strncmp("<<", (*token_list)->content,
-			ft_strlen((*token_list)->content)) == 0
-		&& (ft_strlen((*token_list)->content) == ft_strlen("<<")))
+	if (!ft_strncmp("<<", (*tkn_list)->content, ft_strlen((*tkn_list)->content))
+		&& (ft_strlen((*tkn_list)->content) == ft_strlen("<<")))
 	{
-		ret = (*token_list)->next;
-		shell->heredoc = ft_strdup((*token_list)->next->content);
-		free(*token_list);
+		ret = (*tkn_list)->next;
+		shell->heredoc = ft_strdup((*tkn_list)->next->content);
+		free(*tkn_list);
 		if (ret->next)
-			*token_list = ret->next;
+			*tkn_list = ret->next;
 		else
-			*token_list = NULL;
+			*tkn_list = NULL;
 	}
-	else if (ft_strncmp("<<", (*token_list)->next->content,
-			ft_strlen((*token_list)->next->content)) == 0
-		&& (ft_strlen((*token_list)->next->content) == ft_strlen("<<")))
+	else if (!ft_strncmp("<<", (*tkn_list)->next->content,
+			ft_strlen((*tkn_list)->next->content))
+		&& (ft_strlen((*tkn_list)->next->content) == ft_strlen("<<")))
 	{
-		shell->heredoc = ft_strdup((*token_list)->next->next->content);
-		ret = (*token_list)->next->next->next;
-		ft_lstdelone((*token_list)->next->next, free);
-		ft_lstdelone((*token_list)->next, free);
-		(*token_list)->next = ret;
+		shell->heredoc = ft_strdup((*tkn_list)->next->next->content);
+		ret = (*tkn_list)->next->next->next;
+		ft_lstdelone((*tkn_list)->next->next, free);
+		ft_lstdelone((*tkn_list)->next, free);
+		(*tkn_list)->next = ret;
 	}
 }
 
 /* store path infile if <  */
-void	get_infile(t_list **token_list, t_minishell *shell)
+void	get_infile(t_list **tkn_list, t_minishell *shell)
 {
 	t_list	*tmp;
 
-	tmp = *token_list;
+	tmp = *tkn_list;
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->content, "<<", ft_strlen(tmp->content)) == 0
@@ -71,36 +68,38 @@ void	get_infile(t_list **token_list, t_minishell *shell)
 			return ;
 		if (ft_strncmp(tmp->content, "<", ft_strlen(tmp->content)) == 0
 			&& ft_strlen(tmp->content) == ft_strlen("<"))
+		{
 			if (tmp->next)
 			{
 				shell->inf = ft_strdup(tmp->next->content);
-				if((*token_list)->next->next &&
-					!ft_strncmp((*token_list)->content, "<", ft_strlen(tmp->content)))
-					*token_list = (*token_list)->next->next;
+				if ((*tkn_list)->next->next && !ft_strncmp((*tkn_list)->content,
+						"<", ft_strlen(tmp->content)))
+					*tkn_list = (*tkn_list)->next->next;
 			}
+		}
 		tmp = tmp->next;
 	}
 }
 
 /* store path outfile, append =1 if >>*/
-void	get_outfile(t_list *token_list, t_minishell *shell)
+void	get_outfile(t_list *tkn_list, t_minishell *shell)
 {
 	t_list	*tmp;
 
-	tmp = token_list;
+	tmp = tkn_list;
 	shell->append = 0;
 	while (tmp)
 	{
 		if (!ft_strncmp(tmp->content, ">>", ft_strlen(tmp->content)))
 		{
-			if(!ft_strncmp(tmp->content, ">", ft_strlen(tmp->content))
+			if (!ft_strncmp(tmp->content, ">", ft_strlen(tmp->content))
 				&& tmp->next)
 				close(open(shell->outf, O_RDWR | O_CREAT | O_TRUNC,
-					S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP));
-			if(!ft_strncmp(tmp->content, ">>", ft_strlen(tmp->content))
+						S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP));
+			if (!ft_strncmp(tmp->content, ">>", ft_strlen(tmp->content))
 				&& tmp->next)
 				close(open(shell->outf, O_RDWR | O_CREAT | O_APPEND,
-					S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP));
+						S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP));
 			if (ft_strncmp(tmp->content, ">", ft_strlen(tmp->content)))
 				shell->append = 1;
 			if (tmp->next)
@@ -110,25 +109,23 @@ void	get_outfile(t_list *token_list, t_minishell *shell)
 	}
 }
 
-void	parser(t_list **token_list, t_minishell *shell)
+void	parser(t_list **tkn_list, t_minishell *shell)
 {
-	// int	i;
-	// int j;
+	int		i;
+	int		j;
+	t_list	*ret;
 
-	delimit_heredoc(token_list, shell);
-	get_outfile(*token_list, shell);
-	get_infile(token_list, shell);
-	// printf("tokenlist %s \n", (char*)(*token_list)->content);
-	shell->cmds = pipe_separation(token_list, shell);
-// 	i = 0;
-// 	j = 0;
-// 	// printf("%d %s\n", shell->number_cmd, shell->cmds[i].av[1]);
-// 	while(i <= shell->number_cmd)
-// 	{
-// 		while (shell->cmds[i].av[j])
-// 		{
-// 			quote_expansion_heredoc(&shell->env, &shell->cmds[i].av[j++]);
-// 		}
-// 		i++;
-// }
+	ret = 0;
+	delimit_heredoc(tkn_list, shell, ret);
+	get_outfile(*tkn_list, shell);
+	get_infile(tkn_list, shell);
+	shell->cmds = pipe_separation(tkn_list, shell);
+	i = 0;
+	j = 0;
+	while (i <= shell->number_cmd)
+	{
+		while (shell->cmds[i].av[j])
+			quote_remove_after(&shell->env, &shell->cmds[i].av[j++]);
+		i++;
+	}
 }

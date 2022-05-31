@@ -6,11 +6,12 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 08:18:39 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/31 13:09:05 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/31 17:07:31 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 /*return count=nb of cmds, when str is found + 1*/
 int	cmd_counter(char *str, t_list *token_list)
 {
@@ -35,12 +36,13 @@ t_simple_command	*pipe_separation(t_list **token_list, t_minishell *shell)
 
 	tmp = *token_list;
 	cmds = malloc(sizeof(t_simple_command) * (cmd_counter("|", tmp) + 2));
-	cmds[0].av = malloc(sizeof(char *) * (args_counter(tmp) + 1));// cmds->nb_cmds = 0;
-	// cmds->nb_cmds = cmd_counter("|", tmp) + 1;
-	// cmds[0].av = malloc(sizeof(char *) * (args_counter(tmp) + 1)); //on ecrase cmds 0 ?
+	cmds[0].av = malloc(sizeof(char *) * (args_counter(tmp) + 1));
 	cmds = fill_cmds(tmp, cmds, shell);
 	return (cmds);
 }
+// cmds->nb_cmds = 0;
+// cmds->nb_cmds = cmd_counter("|", tmp) + 1;
+// cmds[0].av = malloc(sizeof(char *) * (args_counter(tmp) + 1));
 
 /*return count=nb of args: count till pipe or rediction is found*/
 int	args_counter(t_list *token_list)
@@ -68,23 +70,22 @@ int	args_counter(t_list *token_list)
 	return (count);
 }
 
-
 int	jump_redirection(t_list **tk)
 {
-	while ((*tk) &&
-		(!ft_strncmp((*tk)->content, ">", ft_strlen((*tk)->content))
-		|| !ft_strncmp((*tk)->content, "<", ft_strlen((*tk)->content))
-		|| !ft_strncmp((*tk)->content, ">>", ft_strlen((*tk)->content))))
+	while ((*tk)
+		&& (!ft_strncmp((*tk)->content, ">", ft_strlen((*tk)->content))
+			|| !ft_strncmp((*tk)->content, "<", ft_strlen((*tk)->content))
+			|| !ft_strncmp((*tk)->content, ">>", ft_strlen((*tk)->content))))
 	{
-		// printf("tmp = %s \n",(char*)(*tk)->content);
 		*tk = (*tk)->next->next;
 		if (!*tk)
 			return (1);
 	}
-	return(0);
+	return (0);
 }
 
-/*fill cmds with token list | j'ai changer le nom token_list en tolist pour la norme */
+/*fill cmds with token list | j'ai changer le nom token_list
+ en tolist pour la norme */
 t_simple_command	*fill_cmds(t_list *tk, t_simple_command *cmds,
 					t_minishell *shell)
 {
@@ -93,12 +94,10 @@ t_simple_command	*fill_cmds(t_list *tk, t_simple_command *cmds,
 
 	i = 0;
 	j = 0;
-	// ft_lst_str_print(*tk);
 	while (tk)
 	{
-		// printf("tmp = %s \n",(char*)tk->content);
 		if (jump_redirection(&tk))
-			break;
+			break ;
 		if (!ft_strncmp(tk->content, "|", ft_strlen(tk->content)))
 		{
 			i++;
@@ -107,13 +106,11 @@ t_simple_command	*fill_cmds(t_list *tk, t_simple_command *cmds,
 			j = 0;
 			tk = tk->next;
 		}
-		cmds[i].av[j] = ft_strdup((char*)tk->content);
-		// printf("cmd %i = %s\n",i,cmds[i].av[j]);
+		cmds[i].av[j] = ft_strdup((char *)tk->content);
 		cmds[i].nb_args = ++j;
 		cmds[i].av[j] = 0;
 		tk = tk->next;
 	}
 	shell->number_cmd = i;
-
 	return (cmds);
 }

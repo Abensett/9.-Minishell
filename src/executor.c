@@ -6,14 +6,15 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:06:29 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/31 14:29:25 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/31 16:25:12 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*  - wait for child
-exit status 128 + N when fatal signal N*/
+exit status 128 + N when fatal signal N
+closes the files after dup into strin and out*/
 static void	reinit_fd_and_handle_g_exit_status(t_exec *exec, t_minishell *shell)
 {
 	char	*g_exit_status_env;
@@ -38,17 +39,11 @@ static void	reinit_fd_and_handle_g_exit_status(t_exec *exec, t_minishell *shell)
 		free(g_exit_status_env);
 		free(tmp);
 	}
-	while (wait(NULL) > 0);
-}
-/* copie stdin stdout */
-int	store_fd_close(int tmpin, int tmpout)
-{
-	g_exit_status = 1;
-	close(tmpin);
-	close(tmpout);
-	return (-1);
+	while (wait(NULL) > 0)
+		;
 }
 
+// 1 strore stdin ou infile, and  2 dup stdout  3 make heredoc
 int	store_fd(t_minishell *shell, t_exec *exec)
 {
 	int	fdin;
@@ -84,7 +79,6 @@ int	get_out_file(int tmpout, t_minishell *shell)
 
 	if (shell->outf)
 	{
-		// printf("append ? %d  %s\n", shell->append, shell->outf );
 		if (shell->append > 0)
 			fdout = open(shell->outf, O_APPEND | O_CREAT | O_RDWR,
 					S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP);
@@ -103,6 +97,14 @@ void	elsexutor(t_exec *exec)
 	exec->fdout = exec->fdpipe[1];
 	exec->fdin = exec->fdpipe[0];
 }
+
+/*
+ MAIN THING :
+-creates a new process for each command, the parent process waits
+for the child to exec the command
+- pipe it up
+ THE EXECUTION -> store fds, fork each pipes, the parent pid waits children
+ and then get the outfile*/
 void	executor(t_minishell *shell)
 {
 	int			i;
@@ -110,9 +112,8 @@ void	executor(t_minishell *shell)
 
 	i = -1;
 	exec.fdin = store_fd(shell, &exec);
-	if (exec.fdin == -1 || ft_is_builtin(shell->number_cmd, shell)) // stop heredo and exec 1 buiiltin export, etc
+	if (exec.fdin == -1 || ft_is_builtin(shell->number_cmd, shell))
 		return ;
-	// printf("\ncmd = %s doc = %s\n", shell->cmds[0].av[0], shell->outf);
 	ft_signaux("command");
 	while (shell->number_cmd >= ++i && shell->cmds[0].av[0] != NULL)
 	{

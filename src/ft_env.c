@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 03:16:42 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/27 21:15:31 by shamizi          ###   ########.fr       */
+/*   Updated: 2022/05/31 16:28:44 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ t_env_list	*init_env(char **envp)
 	return (env);
 }
 
+// maybe put len a 0
 /* cast from t_env_list to **char */
 char	**set_envp(t_env_list *env)
 {
@@ -79,7 +80,7 @@ char	**set_envp(t_env_list *env)
 	char		**returned;
 	t_env_list	*tmp;
 
-	len = 1; //peut etre le mettre a 0 (je pense pas)
+	len = 1;
 	tmp = env;
 	while (tmp->next && ++len)
 		tmp = tmp->next;

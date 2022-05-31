@@ -39,6 +39,7 @@ LDFLAGS			= -L/opt/homebrew/opt/readline/lib -lreadline libft/libft.a
 
 SRC_FILES = arglist.c \
 			quotes_handling.c \
+			quotes_handling_2.c \
 			expansion.c \
 			space_handling.c \
 			ft_env.c \

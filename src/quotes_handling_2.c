@@ -1,39 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quotes_handling.c                                  :+:      :+:    :+:   */
+/*   quotes_handling_2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/31 15:34:19 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/31 16:42:49 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* return first quote between ' and " */
-char	find_first_quote(char *line)
-{
-	char	*str[2];
-	char	quote;
-
-	str[0] = ft_strchr(line, '"');
-	str[1] = ft_strchr(line, '\'');
-	quote = 0;
-	if (!str[0] && str[1])
-		quote = '\'';
-	else if (str[0] && !str[1])
-		quote = '"';
-	else if (str[0] && str[1])
-	{
-		if (ft_strlen(str[0]) > ft_strlen(str[1]))
-			quote = '"';
-		else
-			quote = '\'';
-	}
-	return (quote);
-}
+/* return the pointer of the first quote ' or " */
 
 static int	is_quoted_redirection(char *line)
 {
@@ -52,7 +31,7 @@ static int	is_quoted_redirection(char *line)
 }
 
 /*remove quote and expand what's not between ' ' */
-void	quote_remove(t_env_list **env, char **line)
+void	quote_remove_after(t_env_list **env, char **line)
 {
 	int		i;
 	char	quote;
@@ -61,49 +40,48 @@ void	quote_remove(t_env_list **env, char **line)
 	i = -1;
 	quote = 0;
 	look_for_quote = 0;
-	while ((*line)[++i])
+	if (is_quoted_redirection((*line)))
 	{
-		if (is_quoted_redirection((*line)))
-			continue ;
-		if (!look_for_quote)
-			quote = find_first_quote(&((*line)[i]));
-		if (quote != '\'' && (*line)[i] == '$'
-			&& (ft_isalpha((*line)[i + 1]) || (*line)[i + 1] == '?'))
-			expansion(env, line, &i);
-		if (quote && (*line)[i] == quote)
+		while ((*line)[++i])
 		{
-			ft_str_delete(line, i--, 1);
-			look_for_quote ^= 1;
+			if (!look_for_quote)
+				quote = find_first_quote(&((*line)[i]));
+			if (quote != '\'' && (*line)[i] == '$'
+				&& (ft_isalpha((*line)[i + 1]) || (*line)[i + 1] == '?'))
+				expansion(env, line, &i);
+			if (quote && (*line)[i] == quote)
+			{
+				ft_str_delete(line, i--, 1);
+				look_for_quote ^= 1;
+			}
 		}
 	}
 }
 
-/*return error if quote not closed*/
-int	quote_check(char **line)
+/*expand what's not between ' ', used for heredoc */
+void	quote_expansion_heredoc(t_env_list **env, char **line)
 {
-	char	*tmp;
-	char	quotes[2];
+	int		i;
+	char	quote;
+	int		look_for_quote;
 
-	quotes[0] = find_first_quote(*line);
-	quotes[1] = quotes[0];
-	if (quotes[1])
+	i = -1;
+	quote = 0;
+	look_for_quote = 0;
+	if (*line)
 	{
-		tmp = ft_strchr(*line, quotes[1]);
-		while (tmp)
+		while ((*line)[++i])
 		{
-			tmp = ft_strchr(++tmp, quotes[1]);
-			if (!tmp)
+			if (!look_for_quote)
+				quote = find_first_quote(&((*line)[i]));
+			if (quote != '\'' && (*line)[i] == '$'
+				&& (ft_isalpha((*line)[i + 1]) || (*line)[i + 1] == '?'))
+				expansion(env, line, &i);
+			if (quote && (*line)[i] == quote)
 			{
-				ft_putendl_fd("Unexpected EOF looking for matching '\"'", 2);
-				g_exit_status = 2;
-				return (1);
+				ft_str_delete(line, i--, 1);
+				look_for_quote ^= 1;
 			}
-			else
-				quotes[1] = find_first_quote(++tmp);
-			if (!tmp || !quotes[1])
-				break ;
-			tmp = ft_strchr(tmp, quotes[1]);
 		}
 	}
-	return (0);
 }

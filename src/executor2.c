@@ -6,12 +6,11 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:06:29 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/27 19:23:38 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/31 16:26:01 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 /* exec our buil-ins or exec binary file */
 void	execution(int i, t_minishell *shell, t_exec *exec)
@@ -41,19 +40,13 @@ void	execution(int i, t_minishell *shell, t_exec *exec)
 	exit(exec->pid);
 }
 
-
-/*
- MAIN THING :
--creates a new process for each command, the parent process waits
-for the child to exec the command
-- pipe it up
-*/
-
+/*check if it's built in and then exec builtin
+made for the built in that impact the environment variables*/
 int	ft_is_builtin(int i, t_minishell *shell)
 {
 	const char	*cmd = shell->cmds[i].av[0];
 
-	if( shell->number_cmd != 0)
+	if (shell->number_cmd != 0)
 		return (0);
 	if (ft_strlen(cmd) == 2
 		&& !ft_strncmp(cmd, "cd", 2))
@@ -62,7 +55,7 @@ int	ft_is_builtin(int i, t_minishell *shell)
 		return (1);
 	}
 	else if (ft_strlen(cmd) == 6
-	&& !ft_strncmp(cmd, "export", 6))
+		&& !ft_strncmp(cmd, "export", 6))
 	{
 		export(i, shell);
 		return (1);

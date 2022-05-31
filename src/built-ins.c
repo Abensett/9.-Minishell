@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:21:02 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/30 20:35:15 by shamizi          ###   ########.fr       */
+/*   Updated: 2022/05/31 16:13:51 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,57 +64,50 @@ int	pwd(int i, t_minishell *shell)
 /*
 set (no arg) : display all variables of the environment
 set arg=2 :unset the variable before setting the new value */
+
 void	export(int i, t_minishell *shell)
 {
 	char	*tmp;
-	char	*substr;
 	int		j;
 
-	j = 1;
-	g_exit_status = 0;
+	j = 0;
 	if (!shell->cmds[i].av[1])
 	{
 		env(shell);
 		return ;
 	}
-	while (shell->cmds[i].av[j])
+	while (shell->cmds[i].av[++j])
 	{
 		if (!ft_strncmp(shell->cmds[i].av[j], "=", 1))
 		{
 			ft_exit_status(1, shell);
-			perror("export");
-			j++;
 			continue ;
 		}
 		tmp = ft_strchr(shell->cmds[i].av[j], '=');
 		if (!tmp)
-			return ;
-		substr = ft_substr(shell->cmds[i].av[j], 0, \
+			continue ;
+		tmp = ft_substr(shell->cmds[i].av[j], 0, \
 				ft_strlen(shell->cmds[i].av[j]) - ft_strlen(tmp));
-		unset_env(shell, substr);
-		set_env(shell, shell->cmds[i].av[j++]);
-		free(substr);
+		unset_env(shell, tmp);
+		set_env(shell, shell->cmds[i].av[j]);
+		free(tmp);
 	}
 }
 
 /* unset the variable */
-int	unset(int i, t_minishell *shell)
+void	unset(int i, t_minishell *shell)
 {
 	int	j;
 
 	j = 1;
 	if (!shell->cmds[i].av[1])
-	{
 		ft_exit_status(0, shell);
-		return (0);
-	}
 	while (shell->cmds[i].av[j])
 	{
 		if (!ft_isalpha(*shell->cmds[i].av[1]))
 		{
-			perror("unset");
 			ft_exit_status(1, shell);
-			return (1);
+			return ;
 		}
 		j++;
 	}
@@ -124,10 +117,8 @@ int	unset(int i, t_minishell *shell)
 		if (ft_strlen(shell->cmds[i].av[j]) == 1
 			&& !ft_strncmp(shell->cmds[i].av[j], "=", 1))
 			perror("unset");
-		unset_env(shell, shell->cmds[i].av[j]);
-		j++;
+		unset_env(shell, shell->cmds[i].av[j++]);
 	}
-	return (0);
 }
 
 int	env(t_minishell *shell)

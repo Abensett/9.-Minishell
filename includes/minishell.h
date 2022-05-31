@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:24:25 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/30 22:19:02 by shamizi          ###   ########.fr       */
+/*   Updated: 2022/05/31 16:20:20 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ void				quote_remove(t_env_list **env, char **line);
 void				quote_expansion(t_env_list **env, char **line);
 void				quote_expansion_heredoc(t_env_list **env, char **line);
 int					quote_check(char **line);
+void				quote_remove_after(t_env_list **env, char **line);
+char				find_first_quote(char *line);
 
 /*The expansion*/
 void				expansion(t_env_list **env, char **line, int *i);
@@ -143,7 +145,7 @@ int					echo(int i, t_minishell *shell);
 void				cd(int i, t_minishell *shell);
 int					pwd(int i, t_minishell *shell);
 void				export(int i, t_minishell *shell);
-int					unset(int i, t_minishell *shell);
+void				unset(int i, t_minishell *shell);
 int					env(t_minishell *shell);
 int					ft_exit(t_minishell *shell, char *line, t_list *token_list);
 
@@ -151,6 +153,7 @@ int					ft_exit(t_minishell *shell, char *line, t_list *token_list);
 void				ft_error(int i, char *str);
 void				ft_exit_status(int i, t_minishell *shell);
 void				ft_free(t_minishell *shell, char *mine, t_list *token_list);
+int					store_fd_close(int tmpin, int tmpout);
 
 /* The non interactive */
 void				non_interactive_mode(char **array, char **env);

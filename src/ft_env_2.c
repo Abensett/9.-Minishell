@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 23:49:14 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/27 20:10:13 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/31 16:27:58 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,15 @@ void	set_env(t_minishell *shell, char *str)
 /* free t_env_list */
 void	env_del(t_env_list *env, void (*del)(void *))
 {
-	if(env->key)
+	if (env->key)
 		del(env->key);
-	if(env->value)
+	if (env->value)
 		del(env->value);
-	if(env->all)
+	if (env->all)
 		del(env->all);
+}
 	//if(env)
 	//	free(env);
-}
 
 /* free *t_env_list */
 void	env_clear(t_env_list **env, void (*del)(void *))

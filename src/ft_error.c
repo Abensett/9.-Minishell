@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/31 14:36:05 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/31 16:29:56 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,15 @@ void	ft_error(int i, char *str)
 	}
 }
 
+/* 1: exit_status = i
+	2 : add new exit_status to env*/
 void	ft_exit_status(int i, t_minishell *shell)
 {
 	char	*g_exit_status_env;
 	char	*tmp;
 
+	if (i == 1)
+		ft_putendl_fd("minishell : Not valid", 2);
 	tmp = ft_itoa(g_exit_status);
 	g_exit_status_env = ft_strjoin("?=", tmp);
 	g_exit_status = i;
@@ -36,3 +40,11 @@ void	ft_exit_status(int i, t_minishell *shell)
 	free(tmp);
 }
 
+/* close stdin stdout */
+int	store_fd_close(int tmpin, int tmpout)
+{
+	g_exit_status = 1;
+	close(tmpin);
+	close(tmpout);
+	return (-1);
+}
