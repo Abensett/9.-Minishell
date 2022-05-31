@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 08:18:39 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/31 17:07:31 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/31 18:10:45 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,17 @@ t_simple_command	*pipe_separation(t_list **token_list, t_minishell *shell)
 
 	tmp = *token_list;
 	cmds = malloc(sizeof(t_simple_command) * (cmd_counter("|", tmp) + 2));
+	if (!cmds)
+		return (NULL);
 	cmds[0].av = malloc(sizeof(char *) * (args_counter(tmp) + 1));
+	if (!cmds[0].av)
+		return (NULL);
+	cmds->nb_cmds = cmd_counter("|", tmp) + 1;
 	cmds = fill_cmds(tmp, cmds, shell);
 	return (cmds);
 }
 // cmds->nb_cmds = 0;
-// cmds->nb_cmds = cmd_counter("|", tmp) + 1;
+//
 // cmds[0].av = malloc(sizeof(char *) * (args_counter(tmp) + 1));
 
 /*return count=nb of args: count till pipe or rediction is found*/

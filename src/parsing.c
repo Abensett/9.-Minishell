@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/31 17:04:43 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/31 19:36:11 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,16 +94,20 @@ void	get_outfile(t_list *tkn_list, t_minishell *shell)
 		{
 			if (!ft_strncmp(tmp->content, ">", ft_strlen(tmp->content))
 				&& tmp->next)
-				close(open(shell->outf, O_RDWR | O_CREAT | O_TRUNC,
+				close(open(tmp->next->content, O_RDWR | O_CREAT | O_TRUNC,
 						S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP));
 			if (!ft_strncmp(tmp->content, ">>", ft_strlen(tmp->content))
 				&& tmp->next)
-				close(open(shell->outf, O_RDWR | O_CREAT | O_APPEND,
+				close(open(tmp->next->content, O_RDWR | O_CREAT | O_APPEND,
 						S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP));
 			if (ft_strncmp(tmp->content, ">", ft_strlen(tmp->content)))
 				shell->append = 1;
 			if (tmp->next)
+			{
+				if (shell->outf)
+					free(shell->outf);
 				shell->outf = ft_strdup(tmp->next->content);
+			}
 		}
 		tmp = tmp->next;
 	}
@@ -122,7 +126,7 @@ void	parser(t_list **tkn_list, t_minishell *shell)
 	shell->cmds = pipe_separation(tkn_list, shell);
 	i = 0;
 	j = 0;
-	while (i <= shell->number_cmd)
+	while (i < shell->number_cmd)
 	{
 		while (shell->cmds[i].av[j])
 			quote_remove_after(&shell->env, &shell->cmds[i].av[j++]);

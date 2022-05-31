@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 23:49:14 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/31 16:27:58 by abensett         ###   ########.fr       */
+/*   Updated: 2022/05/31 19:16:34 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,10 @@ void	env_del(t_env_list *env, void (*del)(void *))
 		del(env->value);
 	if (env->all)
 		del(env->all);
+	if (env)
+		del(env);
 }
-	//if(env)
-	//	free(env);
+
 
 /* free *t_env_list */
 void	env_clear(t_env_list **env, void (*del)(void *))
@@ -81,8 +82,9 @@ void	unset_env(t_minishell *shell, char *key)
 		if (ft_strlen(key) == ft_strlen(tmp_env->key) \
 				&& !ft_strncmp(key, tmp_env->key, ft_strlen(key)))
 		{
-			env_del(tmp_env, free);
 			prev->next = tmp_env->next;
+			env_del(tmp_env, free);
+			break ;
 		}
 		prev = tmp_env;
 		tmp_env = tmp_env->next;

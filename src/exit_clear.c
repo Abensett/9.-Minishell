@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_clear.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shamizi <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 17:59:06 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/31 18:00:27 by shamizi          ###   ########.fr       */
+/*   Updated: 2022/05/31 20:06:34 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,9 @@ int	ft_exit(t_minishell *shell, char *line, t_list *token_list)
 		// ft_lstclear(&token_list, free);
 		ft_putendl_fd("exit", 2);
 		//	ft_exit_status(g_exit_status % 256, shell);
+		close(0);
+		close(1);
+		close(2);
 		exit(g_exit_status);
 	}
 	return (0);
@@ -129,8 +132,9 @@ int	ft_exit(t_minishell *shell, char *line, t_list *token_list)
 
 void	free_minishell2(t_minishell *shell)
 {
-	int i = 0;
+	int i;
 
+	i = 0;
 	if(shell->cmds->nb_cmds > 1)
 	{
 		while(i < shell->cmds->nb_cmds)
@@ -139,6 +143,12 @@ void	free_minishell2(t_minishell *shell)
 	}
 	else
 		freecmds(shell->cmds);
+	if (shell->outf)
+		free(shell->outf);
+	if(shell->inf)
+		free(shell->inf);
+	if(shell->heredoc)
+		free(shell->heredoc);
 }
 
 void	ft_free(t_minishell *shell, char *line, t_list *token_list)
@@ -148,7 +158,7 @@ void	ft_free(t_minishell *shell, char *line, t_list *token_list)
 		printf("je tente pas de free\n");
 	else
 	{
-		//unset_env(shell, "?");
+		unset_env(shell, "?");
 		free_minishell2(shell);
 		free(line);
 		ft_lstclear(&token_list, free);

@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 03:16:42 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/31 18:23:36 by shamizi          ###   ########.fr       */
+/*   Updated: 2022/05/31 18:23:36 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ t_env_list	*env_new(char *str)
 	t_env_list	*returned;
 
 	tmp = ft_strchr(str, '=');
-	if (!tmp || !str)
+	if (!tmp)
 		return (0);
 	returned = malloc(sizeof(t_env_list));
-	if (!returned)
+	if (!returned || !str)
 		return (0);
 	returned->next = NULL;
 	returned->all = NULL;
