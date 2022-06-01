@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 23:49:14 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/31 19:16:34 by abensett         ###   ########.fr       */
+/*   Updated: 2022/06/01 09:12:00 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	env_del(t_env_list *env, void (*del)(void *))
 	if (env)
 		del(env);
 }
-
 
 /* free *t_env_list */
 void	env_clear(t_env_list **env, void (*del)(void *))

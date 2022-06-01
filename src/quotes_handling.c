@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/31 15:34:19 by abensett         ###   ########.fr       */
+/*   Updated: 2022/06/01 09:06:38 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	quote_remove(t_env_list **env, char **line)
 	look_for_quote = 0;
 	while ((*line)[++i])
 	{
-		if (is_quoted_redirection((*line)))
+		if (is_quoted_redirection((*line)) && ft_strlen(*line) > 2)
 			continue ;
 		if (!look_for_quote)
 			quote = find_first_quote(&((*line)[i]));

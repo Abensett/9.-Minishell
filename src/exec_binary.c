@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/22 00:52:39 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/31 20:09:18 by abensett         ###   ########.fr       */
+/*   Updated: 2022/06/01 09:13:01 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	**make_paths(char *cmd, char **envp)
 		all_paths[i] = ft_strjoin(paths[i], cmd);
 	all_paths[i] = cmd;
 	all_paths[i + 1] = 0;
-	if(paths)
+	if (paths)
 		freestrings(paths);
 	return (all_paths);
 }
@@ -56,7 +56,7 @@ int	exec_binary(int num, t_minishell *shell)
 	}
 	while (shell->paths[++i])
 		execve(shell->paths[i], shell->cmds[num].av, shell->envp);
-	if(shell->paths)
+	if (shell->paths)
 		freestrings(shell->paths);
 	perror("cmd");
 	exit(127);

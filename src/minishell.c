@@ -52,7 +52,6 @@ int	interactive(t_minishell *shell)
 		if (!ft_strlen(line) || quote_check(&line))
 			continue ;
 		add_history(line);
-		space_handler(&line);
 		token_list = lexer(&shell->env, line);
 		if (!is_valid(token_list, shell) || !token_list)
 			continue ;

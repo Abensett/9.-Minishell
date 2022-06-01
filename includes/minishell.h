@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:24:25 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/31 21:16:51 by shamizi          ###   ########.fr       */
+/*   Updated: 2022/06/01 09:15:48 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-#include <errno.h>
+# include <errno.h>
 
 /* global variable : self-explanatory */
 extern int	g_exit_status;

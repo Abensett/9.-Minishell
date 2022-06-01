@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:06:29 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/31 19:50:11 by abensett         ###   ########.fr       */
+/*   Updated: 2022/06/01 09:12:15 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,6 @@ void	execution(int i, t_minishell *shell, t_exec *exec)
 
 /*check if it's built in and then exec builtin
 made for the built in that impact the environment variables*/
-
-
-
-
-
 int	ft_is_builtin(int i, t_minishell *shell)
 {
 	const char	*cmd = shell->cmds[i].av[0];

@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/31 19:51:26 by abensett         ###   ########.fr       */
+/*   Updated: 2022/06/01 09:15:04 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,14 +86,14 @@ static int	is_valid_first_token(t_list *tmp, t_minishell *shell)
 		&& tmp->next && !tmp->next->next)
 	{
 		close(open(tmp->next->content, O_RDWR | O_CREAT,
-			S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP));
+				S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP));
 		return (1);
 	}
 	if (len == 2 && !ft_strncmp(tmp->content, ">>", 2)
 		&& tmp->next && !tmp->next->next)
 	{
 		close(open(tmp->next->content, O_RDWR | O_CREAT | O_APPEND,
-			S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP));
+				S_IWUSR | S_IRUSR | S_IROTH | S_IRGRP));
 		return (1);
 	}
 	return (0);

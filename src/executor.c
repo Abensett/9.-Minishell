@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:06:29 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/31 19:20:23 by abensett         ###   ########.fr       */
+/*   Updated: 2022/06/01 09:12:38 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	get_out_file(int tmpout, t_minishell *shell)
 
 void	elsexutor(t_exec *exec)
 {
-	int i;
+	int	i;
 
 	i = pipe(exec->fdpipe);
 	if (i == -1)

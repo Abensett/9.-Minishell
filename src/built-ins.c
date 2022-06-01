@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 23:21:02 by abensett          #+#    #+#             */
-/*   Updated: 2022/05/31 16:13:51 by abensett         ###   ########.fr       */
+/*   Updated: 2022/06/01 09:11:46 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ int	pwd(int i, t_minishell *shell)
 /*
 set (no arg) : display all variables of the environment
 set arg=2 :unset the variable before setting the new value */
-
 void	export(int i, t_minishell *shell)
 {
 	char	*tmp;
@@ -78,14 +77,13 @@ void	export(int i, t_minishell *shell)
 	}
 	while (shell->cmds[i].av[++j])
 	{
-		if (!ft_strncmp(shell->cmds[i].av[j], "=", 1))
+		tmp = ft_strchr(shell->cmds[i].av[j], '=');
+		if (!ft_strncmp(shell->cmds[i].av[j], "=", 1) || !tmp)
 		{
 			ft_exit_status(1, shell);
+			ft_putendl_fd("minishell : Not valid", 2);
 			continue ;
 		}
-		tmp = ft_strchr(shell->cmds[i].av[j], '=');
-		if (!tmp)
-			continue ;
 		tmp = ft_substr(shell->cmds[i].av[j], 0, \
 				ft_strlen(shell->cmds[i].av[j]) - ft_strlen(tmp));
 		unset_env(shell, tmp);
@@ -106,6 +104,7 @@ void	unset(int i, t_minishell *shell)
 	{
 		if (!ft_isalpha(*shell->cmds[i].av[1]))
 		{
+			ft_putendl_fd("minishell : Not valid", 2);
 			ft_exit_status(1, shell);
 			return ;
 		}

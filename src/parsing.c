@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/31 19:36:11 by abensett         ###   ########.fr       */
+/*   Updated: 2022/06/01 09:10:31 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,9 +125,9 @@ void	parser(t_list **tkn_list, t_minishell *shell)
 	get_infile(tkn_list, shell);
 	shell->cmds = pipe_separation(tkn_list, shell);
 	i = 0;
-	j = 0;
-	while (i < shell->number_cmd)
+	while (i <= shell->number_cmd)
 	{
+		j = 0;
 		while (shell->cmds[i].av[j])
 			quote_remove_after(&shell->env, &shell->cmds[i].av[j++]);
 		i++;

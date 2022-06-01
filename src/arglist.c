@@ -6,7 +6,7 @@
 /*   By: abensett <abensett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 14:37:13 by shamizi           #+#    #+#             */
-/*   Updated: 2022/05/31 18:59:47 by abensett         ###   ########.fr       */
+/*   Updated: 2022/06/01 09:10:55 by abensett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ t_list	*lexer(t_env_list **env, char *line)
 	t_list	*tokens;
 	t_list	*tmp;
 
+	space_handler(&line);
 	tokens = 0;
 	len = arg_list_create(&token_array, line);
 	while (len--)
