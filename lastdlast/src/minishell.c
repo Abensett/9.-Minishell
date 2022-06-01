@@ -69,7 +69,12 @@ int	main(int ac, char **av, char **envp)
 	t_minishell	shell;
 
 	(void)av;
-	if (ac == 1)
+	if (!*envp)
+	{
+		printf("No environment found\n");
+		return (1);
+	}
+	else if (ac == 1)
 	{
 		ft_init_shell(&shell, envp);
 		interactive(&shell);
