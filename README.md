@@ -48,16 +48,6 @@ exécutée au premier plan.
    - [x] exit no option
 
 
-
-
-
-### General Info
-***
-
-## Functions
-
-
-
 ***
 
 
