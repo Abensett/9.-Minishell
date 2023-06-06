@@ -6,14 +6,19 @@
 
 
 <H1 align="center">
-PROJECT 9-MINISHELL
+9-MINISHELL
 </H1>
 
-# GOAL
+## Table of contents
+* [Goal](#Goal)  
+* [Requirements](#Requirements)
+* [Ressources](#Ressources)
+
+## GOAL
 
 L’objectif de ce projet est de créer un shell minimaliste en C. 
 
-# Rules
+## Requirements
 
 - [x]  Afficher un prompt en l’attente d’une nouvelle commande.
 - [x] Posséder un historique fonctionnel
@@ -50,6 +55,22 @@ exécutée au premier plan.
    - [x] env no option or argument
    - [x] exit no option
 
+## Ressources
+### RFC
+* [Bash Reference Manual](https://www.gnu.org/software/bash/manual/bash.html)
+
+### Parsing
+* [La ligne de commande c'est quoi ?](https://linux.goffinet.org/administration/le-shell/la-ligne-de-commande/)
+
+### Execution
+* [Explication processus](https://www.journaldunet.fr/web-tech/dictionnaire-du-webmastering/1445274-process-informatique-definition-detaillee-et-concrete/)
+* [execve(), fork() et pipe()](https://n-pn.fr/t/2318-c--programmation-systeme-execve-fork-et-pipe)
+* [Unix Pipe](https://aurelienbrabant.fr/blog/an-introduction-to-unix-pipes)
+* [Exit Status](https://www.geeksforgeeks.org/exit-codes-in-c-c-with-examples/)
+* [Wexitstatus](https://www.demo2s.com/c/c-wexitstatus-child-status.html)
+ 
+### Heredoc
+* [Bash Heredoc](https://linuxize.com/post/bash-heredoc/)
 
 ***
 ## 42 Project 101/100
